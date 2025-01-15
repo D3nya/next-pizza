@@ -2,38 +2,60 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import Title from "./title";
-import { Button } from "../ui/button";
 import { Ingredient, ProductItem } from "@prisma/client";
 import { usePizzaOptions } from "@/hooks/use-pizza-options";
 import { getPizzaDetails } from "@/lib/get-pizza-details";
+import { PizzaSize, PizzaType, pizzaTypes } from "@/constants/products";
+
+import { Button } from "../ui/button";
 import PizzaImage from "./pizza-image";
 import GroupVariants from "./group-variants";
-import { PizzaSize, PizzaType, pizzaTypes } from "@/constants/pizza";
-import IngredientItem from "./ingredient-item";
+import { DialogDescription, DialogTitle } from "../ui/dialog";
+import IngredientVariants from "./ingredient-variants";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   imageUrl: string;
+  description: string;
   name: string;
   ingredients: Ingredient[];
   productItems: ProductItem[];
   className?: string;
+  onSubmit: (itemId: number, ingredients: number[]) => void;
+  loading?: boolean;
 };
 
-const ChoosePizzaForm: React.FC<Props> = ({ name, productItems, imageUrl, ingredients, className }) => {
-  const { size, type, selectedIngredients, availableSizes, setSize, setType, addIngredient } =
+const ChoosePizzaForm: React.FC<Props> = ({
+  name,
+  productItems,
+  imageUrl,
+  ingredients,
+  className,
+  description,
+  onSubmit,
+  loading,
+}) => {
+  const { size, type, setSize, setType, selectedIngredients, addIngredient, availableSizes, currentItemId } =
     usePizzaOptions(productItems);
 
   const { totalPrice, textDetaills } = getPizzaDetails(type, size, productItems, ingredients, selectedIngredients);
+
+  const handleClickAdd = () => {
+    if (currentItemId) {
+      onSubmit(currentItemId, Array.from(selectedIngredients));
+    }
+  };
 
   return (
     <div className={cn(className, "flex flex-1")}>
       <PizzaImage imageUrl={imageUrl} size={size} />
 
-      <div className="w-[490px] bg-[#f7f6f5] p-7">
-        <Title text={name} size="md" className="font-extrabold mb-1" />
+      <div className="w-[490px] bg-[#f7f6f5] p-7 rounded-r-xl">
+        <DialogTitle className="font-extrabold mb-1 text-[26px]">{name}</DialogTitle>
 
-        <p className="text-gray-400">{textDetaills}</p>
+        <DialogDescription className="text-gray-400 mb-2 text-base">{textDetaills}</DialogDescription>
+
+        <p className="font-normal leading-4 text-base">{description}</p>
 
         <div className="flex flex-col gap-4 mt-5">
           <GroupVariants
@@ -49,24 +71,23 @@ const ChoosePizzaForm: React.FC<Props> = ({ name, productItems, imageUrl, ingred
           />
         </div>
 
-        <div className="bg-gray-50 p-5 rounded-md h-[420px] overflow-auto scrollbar mt-5">
-          <div className="grid grid-cols-3 gap-3">
-            {ingredients.map((ingredient) => (
-              <IngredientItem
-                key={ingredient.id}
-                name={ingredient.name}
-                price={ingredient.price}
-                imageUrl={ingredient.imageUrl}
-                onClick={() => addIngredient(ingredient.id)}
-                active={selectedIngredients.has(ingredient.id)}
-              />
-            ))}
-          </div>
-        </div>
+        <IngredientVariants
+          className="mt-5 p-5"
+          addIngredient={addIngredient}
+          ingredients={ingredients}
+          selectedIngredients={selectedIngredients}
+        />
 
-        <Button className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
-          Добавить в корзину за {totalPrice} ₽
-        </Button>
+        {loading ? (
+          <Button disabled className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
+            <Loader2 className="animate-spin" />
+            Подождите
+          </Button>
+        ) : (
+          <Button onClick={handleClickAdd} className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
+            Добавить в корзину за {totalPrice} ₽
+          </Button>
+        )}
       </div>
     </div>
   );

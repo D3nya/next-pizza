@@ -1,6 +1,8 @@
 import { Nunito } from "next/font/google";
 
 import "./globals.css";
+import { ThemeProvider } from "@/components/shared/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 const nunito = Nunito({
   subsets: ["cyrillic"],
@@ -14,8 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
-      <body className={`${nunito.variable} ${nunito.variable} antialiased`}>{children}</body>
+    <html lang="ru" suppressHydrationWarning className="scroll-smooth">
+      <body className={`${nunito.variable} ${nunito.variable} antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          {children}
+          <Toaster />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSet } from "react-use";
 import { getAvailablePizzaSizes } from "@/lib/get-available-pizza-sizes";
 import { ProductItem } from "@prisma/client";
-import { PizzaSize, PizzaType } from "@/constants/pizza";
+import { PizzaSize, PizzaType } from "@/constants/products";
 import { Variant } from "@/components/shared/group-variants";
 
 type ReturnProps = {
@@ -23,7 +23,7 @@ export const usePizzaOptions = (items: ProductItem[]): ReturnProps => {
 
   const availableSizes = getAvailablePizzaSizes(type, items);
 
-  const currentItemId = items.find((item) => item.pizzaType === type && item.size === size)?.id;
+  const currentItemId = items.find((item) => item.pizzaType === type && item.pizzaSize === size)?.id;
 
   useEffect(() => {
     const isAvailableSize = availableSizes?.find((item) => Number(item.value) === size && !item.disabled);

@@ -1,21 +1,21 @@
 import React from "react";
 import { prisma } from "@/prisma/prisma-client";
 import { notFound } from "next/navigation";
-
 import ChooseProductModal from "@/components/shared/modals/choose-product-modal";
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
+type Params = Promise<{ id: string }>;
 
-const ProductModalPage: React.FC<Props> = async ({ params }) => {
-  const { id } = await params;
+export default async function ProductModalPage(props: { params: Params }) {
+  const { id: stringId } = await props.params;
+  const id = Number(stringId);
+
+  if (isNaN(id)) {
+    return notFound();
+  }
 
   const product = await prisma.product.findFirst({
     where: {
-      id: Number(id),
+      id,
     },
     include: {
       ingredients: true,
@@ -28,6 +28,4 @@ const ProductModalPage: React.FC<Props> = async ({ params }) => {
   }
 
   return <ChooseProductModal product={product} />;
-};
-
-export default ProductModalPage;
+}

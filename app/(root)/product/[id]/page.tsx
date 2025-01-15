@@ -7,18 +7,18 @@ import ProductImage from "@/components/shared/product-image";
 import Title from "@/components/shared/title";
 import GroupVariants from "@/components/shared/group-variants";
 
-type Props = {
-  className?: string;
-  params: {
-    id: string;
-  };
-};
+type Params = Promise<{ id: string }>;
 
-const ProductPage: React.FC<Props> = async ({ params, className }) => {
-  const { id } = await params;
+export default async function ProductPage(props: { params: Params }) {
+  const { id: stringId } = await props.params;
+  const id = Number(stringId);
+
+  if (isNaN(id)) {
+    return notFound();
+  }
 
   const product = await prisma.product.findFirst({
-    where: { id: Number(id) },
+    where: { id },
     include: {
       ingredients: true,
       category: {
@@ -41,7 +41,7 @@ const ProductPage: React.FC<Props> = async ({ params, className }) => {
   return (
     <Container className="flex flex-col my-10">
       <div className="flex flex-1">
-        <ProductImage imageUrl={product.imageUrl} className={className} />
+        <ProductImage imageUrl={product.imageUrl} />
         <div className="w-[490px] bg-[#f7f6f5] p-7">
           <Title text={product.name} size="md" className="font-extrabold mb-1" />
           <p className="text-gray-400">
@@ -70,6 +70,4 @@ const ProductPage: React.FC<Props> = async ({ params, className }) => {
       </div>
     </Container>
   );
-};
-
-export default ProductPage;
+}

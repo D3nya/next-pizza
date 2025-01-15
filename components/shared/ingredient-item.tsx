@@ -16,7 +16,7 @@ const IngredientItem: React.FC<Props> = ({ className, active, price, name, image
   return (
     <div
       className={cn(
-        "flex items-center flex-col p-1 rounded-md w-32 text-center relative cursor-pointer shadow-md bg-white",
+        "flex items-center flex-col p-1 rounded-md w-32 text-center relative cursor-pointer shadow-md bg-white border border-spacing-1",
         { "border border-primary": active },
         className
       )}

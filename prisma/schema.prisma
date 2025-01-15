@@ -46,8 +46,9 @@ model Category {
 model Product {
   id Int @id @default(autoincrement())
 
-  name     String
-  imageUrl String
+  name        String
+  description String
+  imageUrl    String
 
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId Int
@@ -62,9 +63,14 @@ model Product {
 model ProductItem {
   id Int @id @default(autoincrement())
 
-  price     Int
-  size      Int?
+  price  Int
+  weight Int
+
+  // Pizzas
+  pizzaSize Int?
   pizzaType Int?
+  // Other products
+  quantity  String?
 
   product   Product @relation(fields: [productId], references: [id])
   productId Int
@@ -92,7 +98,7 @@ model Cart {
   totalAmount Int    @default(0)
   token       String
 
-  items CartItem[]
+  cartItems CartItem[]
 
   user   User? @relation(fields: [userId], references: [id])
   userId Int?  @unique
@@ -104,7 +110,7 @@ model Cart {
 model CartItem {
   id Int @id @default(autoincrement())
 
-  quantity Int @default(1)
+  totalCount Int @default(1)
 
   cart   Cart @relation(fields: [cartId], references: [id])
   cartId Int

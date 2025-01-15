@@ -11,10 +11,11 @@ type Props = {
   name: string;
   price: number;
   imageUrl: string;
+  description: string;
   className?: string;
 };
 
-const ProductCard: React.FC<Props> = ({ id, name, price, imageUrl, className }) => {
+const ProductCard: React.FC<Props> = ({ id, name, price, imageUrl, className, description }) => {
   return (
     <div className={className}>
       <Link href={`/product/${id}`} className="h-full flex justify-between flex-col" passHref>
@@ -25,7 +26,7 @@ const ProductCard: React.FC<Props> = ({ id, name, price, imageUrl, className }) 
               alt={name}
               width={215}
               height={215}
-              className="object-cover rounded-lg"
+              className="object-cover rounded-lg w-auto h-auto"
               loading="lazy"
             />
           </div>
@@ -33,9 +34,7 @@ const ProductCard: React.FC<Props> = ({ id, name, price, imageUrl, className }) 
           <Title text={name} size="sm" className="mb-1 mt-3 font-bold" />
         </div>
 
-        <p className="text-sm text-gray-400">
-          Цыпленок, моцарелла, сыры чеддер и пармезан, сырный соус, томаты, соус альфредо, чеснок
-        </p>
+        <p className="text-sm text-gray-400">{description}</p>
 
         <div className="flex justify-between items-center mt-4">
           <span className="text-[20px] font-bold">от {price} ₽</span>

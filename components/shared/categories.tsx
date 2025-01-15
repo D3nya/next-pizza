@@ -11,8 +11,6 @@ type Props = {
   className?: string;
 };
 
-const categories = [];
-
 const Categories: React.FC<Props> = ({ items, className }) => {
   const categoryActiveId = useCategoryStore((state) => state.activeId);
 

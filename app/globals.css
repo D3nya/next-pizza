@@ -71,3 +71,18 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Scrollbar width */
+::-webkit-scrollbar {
+  @apply w-2.5 h-2.5;
+}
+
+/* Scrollback track */
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+/* Handle scrollbar */
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-primary hover:bg-primary/75 border-[1px] border-transparent border-solid bg-clip-padding;
+}
