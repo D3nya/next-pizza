@@ -13,12 +13,14 @@ import CartButton from "./cart-button";
 import ThemeButton from "./theme-button";
 
 type Props = {
+  hasSearch: boolean;
+  hasCart: boolean;
   className?: string;
 };
 
-const Header: React.FC<Props> = ({ className }) => {
+const Header: React.FC<Props> = ({ className, hasSearch = true, hasCart = true }) => {
   return (
-    <header className={cn("border border-b", className)}>
+    <header className={cn("border-b", className)}>
       <Container className="flex items-center justify-between py-8">
         {/* Left */}
         <Link href="/">
@@ -32,9 +34,11 @@ const Header: React.FC<Props> = ({ className }) => {
         </Link>
 
         {/* Search */}
-        <div className="mx-10 flex-1">
-          <SearchInput />
-        </div>
+        {hasSearch && (
+          <div className="mx-10 flex-1">
+            <SearchInput />
+          </div>
+        )}
 
         {/* Right */}
         <div className="flex items-center gap-3">
@@ -43,9 +47,11 @@ const Header: React.FC<Props> = ({ className }) => {
             <User size={16} />
             Войти
           </Button>
-          <div>
-            <CartButton />
-          </div>
+          {hasCart && (
+            <div>
+              <CartButton />
+            </div>
+          )}
         </div>
       </Container>
     </header>

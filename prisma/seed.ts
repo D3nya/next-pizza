@@ -21,7 +21,7 @@ type GenerateProductItemOptions = {
 const generateProductItem = ({
   productId,
   weight,
-  price = randomDecimalNumber(150, 1000),
+  price = randomDecimalNumber(150, 2000),
   pizzaType,
   pizzaSize,
   quantity,

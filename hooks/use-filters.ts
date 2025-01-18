@@ -8,7 +8,7 @@ type PriceProps = {
 };
 
 export type Filters = {
-  sizes: Set<string>;
+  pizzaSizes: Set<string>;
   pizzaTypes: Set<string>;
   selectedIngredients: Set<string>;
   prices: PriceProps;
@@ -17,7 +17,7 @@ export type Filters = {
 interface ReturnProps extends Filters {
   setPrices: (name: keyof PriceProps, value: number) => void;
   setPizzaTypes: (value: string) => void;
-  setSizes: (value: string) => void;
+  setPizzaSizes: (value: string) => void;
   setSelectedIngredients: (value: string) => void;
 }
 
@@ -33,7 +33,7 @@ export const useFilters = (): ReturnProps => {
     getSetFromQueryParam(searchParams, "ingredients")
   );
 
-  const [sizes, { toggle: toggleSizes }] = useSet(getSetFromQueryParam(searchParams, "sizes"));
+  const [pizzaSizes, { toggle: togglePizzaSizes }] = useSet(getSetFromQueryParam(searchParams, "pizzaSizes"));
 
   const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(getSetFromQueryParam(searchParams, "pizzaTypes"));
 
@@ -51,15 +51,15 @@ export const useFilters = (): ReturnProps => {
 
   return useMemo(
     () => ({
-      sizes,
+      pizzaSizes,
       pizzaTypes,
       selectedIngredients,
       prices,
-      setSizes: toggleSizes,
+      setPizzaSizes: togglePizzaSizes,
       setPizzaTypes: togglePizzaTypes,
       setSelectedIngredients: toggleIngredients,
       setPrices: updatePrice,
     }),
-    [sizes, pizzaTypes, selectedIngredients, prices, toggleSizes, togglePizzaTypes, toggleIngredients]
+    [pizzaSizes, pizzaTypes, selectedIngredients, prices]
   );
 };

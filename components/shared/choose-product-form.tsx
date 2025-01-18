@@ -10,6 +10,7 @@ import IngredientVariants from "./ingredient-variants";
 import GroupVariants from "./group-variants";
 import { ProductQuantityValue } from "@/constants/products";
 import { Loader2 } from "lucide-react";
+import Title from "./title";
 
 type Props = {
   imageUrl: string;
@@ -20,6 +21,7 @@ type Props = {
   className?: string;
   onSubmit: (itemId: number, ingredients: number[]) => void;
   loading?: boolean;
+  full?: boolean;
 };
 
 const ChooseProductForm: React.FC<Props> = ({
@@ -31,6 +33,7 @@ const ChooseProductForm: React.FC<Props> = ({
   productItems,
   onSubmit,
   loading,
+  full,
 }) => {
   const { quantity, setQuantity, addIngredient, selectedIngredients, currentItemId } = useProductOptions(productItems);
 
@@ -48,13 +51,21 @@ const ChooseProductForm: React.FC<Props> = ({
   };
 
   return (
-    <div className={cn(className, "flex flex-1")}>
+    <div className={cn(className, "flex flex-1", full && "items-center")}>
       <ProductImage imageUrl={imageUrl} />
 
-      <div className="w-[490px] bg-[#f7f6f5] p-7 rounded-r-xl">
-        <DialogTitle className="font-extrabold mb-1 text-[26px]">{name}</DialogTitle>
+      <div className={cn("w-[490px] bg-[#f7f6f5] p-7 rounded-r-xl", full && "rounded-xl")}>
+        {full ? (
+          <Title text={name} size="md" className="font-extrabold mb-1" />
+        ) : (
+          <DialogTitle className="font-extrabold mb-1 text-[26px]">{name}</DialogTitle>
+        )}
 
-        <DialogDescription className="text-gray-400 mb-2 text-base">{textDetails}</DialogDescription>
+        {full ? (
+          <p className="text-gray-400 mb-2 text-base">{textDetails}</p>
+        ) : (
+          <DialogDescription className="text-gray-400 mb-2 text-base">{textDetails}</DialogDescription>
+        )}
 
         <p className="font-normal leading-4 text-base">{description}</p>
 

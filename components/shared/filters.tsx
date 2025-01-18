@@ -49,8 +49,8 @@ const Filters: React.FC<Props> = ({ className }) => {
         title="Размер"
         name="sizes"
         className="mb-5"
-        onClickCheckbox={filters.setSizes}
-        selected={filters.sizes}
+        onClickCheckbox={filters.setPizzaSizes}
+        selected={filters.pizzaSizes}
         items={[
           { text: "25 см", value: "25" },
           { text: "30 см", value: "30" },

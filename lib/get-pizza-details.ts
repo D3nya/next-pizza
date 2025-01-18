@@ -11,9 +11,9 @@ export const getPizzaDetails = (
 ) => {
   const totalPrice = calcTotalPrice(productItems, ingredients, selectedIngredients, { type, size });
 
-  const textDetaills = `${size} см, ${mapPizzaType[type].toLocaleLowerCase()} пицца, ${
+  const textDetails = `${size} см, ${mapPizzaType[type].toLocaleLowerCase()} пицца, ${
     productItems.find((item) => item.pizzaType === type && item.pizzaSize === size)?.weight
   } г.`;
 
-  return { totalPrice, textDetaills };
+  return { totalPrice, textDetails };
 };

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ProductWithRelations } from "@/types/prisma";
 import ChoosePizzaForm from "./choose-pizza-form";
@@ -7,10 +9,11 @@ import { useToast } from "@/hooks/use-toast";
 
 type Props = {
   product: ProductWithRelations;
+  full?: boolean;
   onSubmit?: VoidFunction;
 };
 
-const ProductForm: React.FC<Props> = ({ product, onSubmit }) => {
+const ProductForm: React.FC<Props> = ({ product, full, onSubmit }) => {
   const { addCartItem, loading } = useCartStore();
   const { toast } = useToast();
 
@@ -52,6 +55,7 @@ const ProductForm: React.FC<Props> = ({ product, onSubmit }) => {
         productItems={product.productItems}
         onSubmit={onSubmitForm}
         loading={loading}
+        full={full}
       />
     );
   }
@@ -65,6 +69,7 @@ const ProductForm: React.FC<Props> = ({ product, onSubmit }) => {
       productItems={product.productItems}
       onSubmit={onSubmitForm}
       loading={loading}
+      full={full}
     />
   );
 };

@@ -13,6 +13,7 @@ import GroupVariants from "./group-variants";
 import { DialogDescription, DialogTitle } from "../ui/dialog";
 import IngredientVariants from "./ingredient-variants";
 import { Loader2 } from "lucide-react";
+import Title from "./title";
 
 type Props = {
   imageUrl: string;
@@ -23,6 +24,7 @@ type Props = {
   className?: string;
   onSubmit: (itemId: number, ingredients: number[]) => void;
   loading?: boolean;
+  full?: boolean;
 };
 
 const ChoosePizzaForm: React.FC<Props> = ({
@@ -34,11 +36,12 @@ const ChoosePizzaForm: React.FC<Props> = ({
   description,
   onSubmit,
   loading,
+  full,
 }) => {
   const { size, type, setSize, setType, selectedIngredients, addIngredient, availableSizes, currentItemId } =
     usePizzaOptions(productItems);
 
-  const { totalPrice, textDetaills } = getPizzaDetails(type, size, productItems, ingredients, selectedIngredients);
+  const { totalPrice, textDetails } = getPizzaDetails(type, size, productItems, ingredients, selectedIngredients);
 
   const handleClickAdd = () => {
     if (currentItemId) {
@@ -47,13 +50,21 @@ const ChoosePizzaForm: React.FC<Props> = ({
   };
 
   return (
-    <div className={cn(className, "flex flex-1")}>
+    <div className={cn(className, "flex flex-1", full && "items-center")}>
       <PizzaImage imageUrl={imageUrl} size={size} />
 
-      <div className="w-[490px] bg-[#f7f6f5] p-7 rounded-r-xl">
-        <DialogTitle className="font-extrabold mb-1 text-[26px]">{name}</DialogTitle>
+      <div className={cn("w-[490px] bg-[#f7f6f5] p-7 rounded-r-xl", full && "rounded-xl")}>
+        {full ? (
+          <Title text={name} size="md" className="font-extrabold mb-1" />
+        ) : (
+          <DialogTitle className="font-extrabold mb-1 text-[26px]">{name}</DialogTitle>
+        )}
 
-        <DialogDescription className="text-gray-400 mb-2 text-base">{textDetaills}</DialogDescription>
+        {full ? (
+          <p className="text-gray-400 mb-2 text-base">{textDetails}</p>
+        ) : (
+          <DialogDescription className="text-gray-400 mb-2 text-base">{textDetails}</DialogDescription>
+        )}
 
         <p className="font-normal leading-4 text-base">{description}</p>
 

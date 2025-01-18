@@ -7,7 +7,7 @@ export const useQueryFilters = (filters: Filters) => {
   const router = useRouter();
 
   const pizzaTypesString = Array.from(filters.pizzaTypes).join(",");
-  const sizesString = Array.from(filters.sizes).join(",");
+  const sizesString = Array.from(filters.pizzaSizes).join(",");
   const ingredientsString = Array.from(filters.selectedIngredients).join(",");
 
   useEffect(() => {
@@ -30,8 +30,8 @@ export const useQueryFilters = (filters: Filters) => {
       }
 
       // Set sizes
-      if (filters.sizes.size > 0) {
-        searchParams.set("sizes", sizesString);
+      if (filters.pizzaSizes.size > 0) {
+        searchParams.set("pizzaSizes", sizesString);
       }
 
       // Set ingredients
@@ -46,15 +46,5 @@ export const useQueryFilters = (filters: Filters) => {
     }
 
     isMounted.current = true;
-  }, [
-    filters.pizzaTypes.size,
-    filters.prices.priceFrom,
-    filters.prices.priceTo,
-    filters.selectedIngredients.size,
-    filters.sizes.size,
-    ingredientsString,
-    pizzaTypesString,
-    router,
-    sizesString,
-  ]);
+  }, [filters]);
 };
