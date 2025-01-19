@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useCart } from "@/hooks/use-cart";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,8 +11,16 @@ import { CheckoutCart } from "@/components/shared/checkout/checkout-cart";
 import { CheckoutAddressForm } from "@/components/shared/checkout/checkout-address-form";
 import { CheckoutPersonalForm } from "@/components/shared/checkout/checkout-personal-form";
 import { CheckoutSidebar } from "@/components/shared/checkout-sidebar";
+import { createOrder } from "@/app/actions";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { Api } from "@/services/api-client";
 
 export default function CheckoutPage() {
+  const router = useRouter();
+  const { data } = useSession();
+  const [submitting, setSubmitting] = useState(false);
   const { totalAmount, updateItemTotalCount, items, removeCartItem, loading } = useCart();
 
   const form = useForm<CheckoutFormValues>({
@@ -26,8 +35,44 @@ export default function CheckoutPage() {
     },
   });
 
+  async function fetchUserInfo() {
+    const data = await Api.auth.getMe();
+    const [firstName, lastName] = data.fullName.split(" ");
+
+    form.setValue("firstName", firstName);
+    form.setValue("lastName", lastName);
+    form.setValue("email", data.email);
+  }
+
+  useEffect(() => {
+    if (data) {
+      fetchUserInfo();
+    }
+  }, [data]);
+
   const onSubmit = async (data: CheckoutFormValues) => {
-    console.log(data);
+    try {
+      setSubmitting(true);
+
+      const url = await createOrder(data);
+
+      if (url) {
+        router.push(url);
+      }
+
+      toast({
+        title: "Заказ успешно оформлен!",
+        description: "Пицца скоро приедет к вам.",
+      });
+    } catch (err) {
+      console.log(err);
+      setSubmitting(false);
+      toast({
+        variant: "destructive",
+        title: "Ой-ой! Что-то пошло не так.",
+        description: "Не удалось создать заказ.",
+      });
+    }
   };
 
   const onClickCountButton = (id: number, totalCount: number, type: "plus" | "minus") => {
@@ -58,7 +103,7 @@ export default function CheckoutPage() {
 
             {/* Right */}
             <div className="w-[450px]">
-              <CheckoutSidebar totalAmount={totalAmount} loading={false} />
+              <CheckoutSidebar totalAmount={totalAmount} loading={loading || submitting} />
             </div>
           </div>
         </form>

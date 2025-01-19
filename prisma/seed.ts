@@ -21,7 +21,7 @@ type GenerateProductItemOptions = {
 const generateProductItem = ({
   productId,
   weight,
-  price = randomDecimalNumber(150, 2000),
+  price = randomDecimalNumber(150, 1000),
   pizzaType,
   pizzaSize,
   quantity,
@@ -56,28 +56,139 @@ async function down() {
 
 async function up() {
   // Users
-  await prisma.user.createMany({
+  const user1 = await prisma.user.create({
+    data: {
+      fullName: "Test User 1",
+      email: "user1@test.ru",
+      password: hashSync("1234567890qweraA!", 10),
+      verified: new Date(),
+      role: "USER",
+    },
+  });
+
+  const user2 = await prisma.user.create({
+    data: {
+      fullName: "Test User 2",
+      email: "user2@test.ru",
+      password: hashSync("1234567890qweraA!", 10),
+      verified: new Date(),
+      role: "USER",
+    },
+  });
+
+  const user3 = await prisma.user.create({
+    data: {
+      fullName: "Admin Admin",
+      email: "admin@test.ru",
+      password: hashSync("1234567890qweraA!", 10),
+      verified: new Date(),
+      role: "ADMIN",
+    },
+  });
+
+  // Stories
+  await prisma.story.createMany({
     data: [
       {
-        fullName: "Test User 1",
-        email: "user1@test.ru",
-        password: hashSync("123456", 10),
-        verified: new Date(),
-        role: "USER",
+        previewImageUrl: "/assets/images/stories/1/preview.webp",
       },
       {
-        fullName: "Test User 2",
-        email: "user2@test.ru",
-        password: hashSync("123456", 10),
-        verified: new Date(),
-        role: "USER",
+        previewImageUrl: "/assets/images/stories/2/preview.webp",
       },
       {
-        fullName: "Admin Admin",
-        email: "admin@test.ru",
-        password: hashSync("123456", 10),
-        verified: new Date(),
-        role: "ADMIN",
+        previewImageUrl: "/assets/images/stories/3/preview.webp",
+      },
+      {
+        previewImageUrl: "/assets/images/stories/4/preview.webp",
+      },
+      {
+        previewImageUrl: "/assets/images/stories/5/preview.webp",
+      },
+      {
+        previewImageUrl: "/assets/images/stories/6/preview.webp",
+      },
+      {
+        previewImageUrl: "/assets/images/stories/7/preview.webp",
+      },
+      {
+        previewImageUrl: "/assets/images/stories/8/preview.webp",
+      },
+    ],
+  });
+
+  await prisma.storyItem.createMany({
+    data: [
+      {
+        storyId: 1,
+        sourceUrl: "/assets/images/stories/1/1.webp",
+      },
+      {
+        storyId: 2,
+        sourceUrl: "/assets/images/stories/2/1.webp",
+      },
+      {
+        storyId: 3,
+        sourceUrl: "/assets/images/stories/3/1.webp",
+      },
+      {
+        storyId: 4,
+        sourceUrl: "/assets/images/stories/4/1.webp",
+      },
+      {
+        storyId: 4,
+        sourceUrl: "/assets/images/stories/4/2.webp",
+      },
+      {
+        storyId: 4,
+        sourceUrl: "/assets/images/stories/4/3.webp",
+      },
+      {
+        storyId: 4,
+        sourceUrl: "/assets/images/stories/4/4.webp",
+      },
+      {
+        storyId: 5,
+        sourceUrl: "/assets/images/stories/5/1.webp",
+      },
+      {
+        storyId: 6,
+        sourceUrl: "/assets/images/stories/6/1.webp",
+      },
+      {
+        storyId: 7,
+        sourceUrl: "/assets/images/stories/7/1.webp",
+      },
+      {
+        storyId: 7,
+        sourceUrl: "/assets/images/stories/7/2.webp",
+      },
+      {
+        storyId: 7,
+        sourceUrl: "/assets/images/stories/7/3.webp",
+      },
+      {
+        storyId: 7,
+        sourceUrl: "/assets/images/stories/7/4.webp",
+      },
+      {
+        storyId: 7,
+        sourceUrl: "/assets/images/stories/7/5.webp",
+      },
+      {
+        storyId: 7,
+        sourceUrl: "/assets/images/stories/7/6.webp",
+      },
+      {
+        storyId: 7,
+        sourceUrl: "/assets/images/stories/7/7.webp",
+      },
+      {
+        storyId: 7,
+        sourceUrl: "/assets/images/stories/7/8.webp",
+      },
+      {
+        storyId: 8,
+        sourceUrl: "/assets/images/stories/8/1.webp",
       },
     ],
   });
@@ -636,17 +747,17 @@ async function up() {
         token: crypto.randomUUID(),
       },
       {
-        userId: 1,
+        userId: user1.id,
         totalAmount: 0,
         token: crypto.randomUUID(),
       },
       {
-        userId: 2,
+        userId: user2.id,
         totalAmount: 0,
         token: crypto.randomUUID(),
       },
       {
-        userId: 3,
+        userId: user3.id,
         totalAmount: 0,
         token: crypto.randomUUID(),
       },
