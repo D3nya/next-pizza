@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: pg-database
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${POSTGRES_VOLUME}:/var/lib/postgresql/data
+
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: next-pizza-app
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      SKIP_SEED: ${SKIP_SEED}
+    depends_on:
+      - postgres
+    profiles:
+      - prod
+
+volumes:
+  pgdata-dev:
+  pgdata-prod:

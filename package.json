@@ -10,7 +10,10 @@
     "prisma:push": "prisma db push",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "prisma:seed": "prisma db seed"
+    "prisma:seed": "prisma db seed",
+    "docker:dev": "docker-compose --env-file .env up",
+    "docker:prod": "docker-compose --profile prod --env-file .env.production  up --build",
+    "docker:stop": "docker-compose down"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"

@@ -784,6 +784,13 @@ async function up() {
 
 async function main() {
   try {
+    if (process.env.SKIP_SEED === "true") {
+      console.log("Skipping seed...");
+      return;
+    }
+
+    console.log("Running development seed...");
+
     await down();
     await up();
   } catch (e) {
@@ -797,6 +804,8 @@ main()
   })
   .catch(async (e) => {
     console.error(e);
-    await prisma.$disconnect();
     process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });
