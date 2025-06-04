@@ -1,4 +1,5 @@
 import { prisma } from "@/prisma/prisma-client";
+import { Prisma } from "@prisma/client";
 
 export type GetSearchParams = {
   query?: string;
@@ -10,10 +11,21 @@ export type GetSearchParams = {
   priceTo?: string;
 };
 
+export type CategoryWithRelations = Prisma.CategoryGetPayload<{
+  include: {
+    products: {
+      include: {
+        ingredients: true;
+        productItems: true;
+      };
+    };
+  };
+}>;
+
 const DEFAULT_MIN_PRICE = 0;
 const DEFAULT_MAX_PRICE = 2000;
 
-export const findPizzas = async (params: GetSearchParams) => {
+export const findPizzas = async (params: GetSearchParams): Promise<CategoryWithRelations[]> => {
   const pizzaSizes = params.pizzaSizes?.split(",").map(Number);
   const pizzaTypes = params.pizzaTypes?.split(",").map(Number);
   const ingredientsIdArr = params.ingredients?.split(",").map(Number);

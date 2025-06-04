@@ -3,7 +3,7 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight, Loader2, ShoppingCart } from "lucide-react";
-import { useCartStore } from "@/store/cart";
+import { useCartItems, useCartLoading, useCartTotal } from "@/store/cart";
 
 import { Button } from "../ui/button";
 import CartDrawer from "./cart-drawer";
@@ -13,7 +13,9 @@ type Props = {
 };
 
 const CartButton: React.FC<Props> = ({ className }) => {
-  const { items, totalAmount, loading } = useCartStore();
+  const items = useCartItems();
+  const totalAmount = useCartTotal();
+  const loading = useCartLoading();
 
   return (
     <CartDrawer>

@@ -4,7 +4,6 @@ import { Controller, useFormContext } from "react-hook-form";
 import { WhiteBlock } from "../white-block";
 import { ErrorText } from "../error-text";
 import { FormTextarea } from "../form/form-textarea";
-import { AddressSuggestions } from "react-dadata";
 import { Input } from "@/components/ui/input";
 import { useId, useRef, useState } from "react";
 import { ClearButton } from "../clear-button";
@@ -17,13 +16,12 @@ export const CheckoutAddressForm: React.FC<Props> = ({ className }) => {
   const { control, setValue } = useFormContext();
   const id = useId();
   const [inputValue, setInputValue] = useState<string | undefined>("");
-  const suggestionsRef = useRef<AddressSuggestions>(null);
+  // const suggestionsRef = useRef<AddressSuggestions>(null);
 
-  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
+  // const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInputValue(e.target.value);
+  // };
 
-  const token = process.env.NEXT_PUBLIC_DADATA_TOKEN || "";
   const name = "address";
 
   return (
@@ -35,7 +33,7 @@ export const CheckoutAddressForm: React.FC<Props> = ({ className }) => {
           render={({ field: { onChange }, fieldState }) => (
             <div>
               <div className="relative">
-                <AddressSuggestions
+                {/* <AddressSuggestions
                   ref={suggestionsRef}
                   token={token}
                   onChange={(data) => {
@@ -55,7 +53,7 @@ export const CheckoutAddressForm: React.FC<Props> = ({ className }) => {
                   suggestionClassName="cursor-pointer text-left overflow-hidden w-full border-none px-3 py-2 text-sm bg-white hover:bg-slate-100"
                   hintClassName="bg-blue"
                   highlightClassName="text-primary bg-transparent"
-                />
+                /> */}
                 {inputValue && (
                   <ClearButton
                     onClick={() => {

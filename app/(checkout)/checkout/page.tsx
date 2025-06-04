@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useCart } from "@/hooks/use-cart";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutFormSchema, CheckoutFormValues } from "@/constants/checkout-form-schema";
@@ -16,12 +15,16 @@ import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Api } from "@/services/api-client";
+import { useCartActions, useCartItems, useCartLoading, useCartTotal } from "@/store/cart";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { data } = useSession();
   const [submitting, setSubmitting] = useState(false);
-  const { totalAmount, updateItemTotalCount, items, removeCartItem, loading } = useCart();
+  const { updateItemTotalCount, removeCartItem } = useCartActions();
+  const items = useCartItems();
+  const totalAmount = useCartTotal();
+  const loading = useCartLoading();
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutFormSchema),

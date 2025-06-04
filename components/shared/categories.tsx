@@ -3,8 +3,9 @@
 import React from "react";
 
 import { cn } from "@/lib/utils";
-import { useCategoryStore } from "@/store/category";
+
 import { Category } from "@prisma/client";
+import { useActiveCategoryId } from "@/store/category";
 
 type Props = {
   items: Category[];
@@ -12,20 +13,21 @@ type Props = {
 };
 
 const Categories: React.FC<Props> = ({ items, className }) => {
-  const categoryActiveId = useCategoryStore((state) => state.activeId);
+  const activeCategoryId = useActiveCategoryId();
 
   return (
-    <div className={cn("inline-flex gap-1 bg-gray-50 p-1 rounded-2xl", className)}>
+    <div className={cn("inline-flex gap-1 bg-gray-50 dark:bg-gray-800 p-1 rounded-2xl", className)}>
       {items.map(({ name, id }) => (
         <a
           key={id}
           href={`/#${name}`}
           className={cn(
-            "flex items-center font-bold h-11 rounded-2xl px-5",
-            categoryActiveId === id && "bg-white shadow-md shadow-gray-200 text-primary"
+            "flex items-center font-bold h-11 rounded-2xl px-5 cursor-pointer",
+            activeCategoryId === id &&
+              "bg-white dark:bg-gray-900 shadow-md dark:shadow-none shadow-gray-200 dark:shadow-black text-primary"
           )}
         >
-          <button>{name}</button>
+          {name}
         </a>
       ))}
     </div>

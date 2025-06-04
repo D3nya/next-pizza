@@ -16,19 +16,22 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
 import CartDrawerItem from "./cart-drawer-item";
-import { useCart } from "@/hooks/use-cart";
 import { getCartItemDetails } from "@/lib/get-cart-item-details";
 import { PizzaSize, PizzaType, ProductQuantityValue } from "@/constants/products";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { getProductDeclension } from "@/lib/get-product-declension";
+import { useCartActions, useCartItems, useCartTotal } from "@/store/cart";
 
 type Props = {
   className?: string;
 };
 
 const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
-  const { totalAmount, updateItemTotalCount, items, removeCartItem } = useCart();
+  const { updateItemTotalCount, removeCartItem } = useCartActions();
+  const items = useCartItems();
+  const totalAmount = useCartTotal();
+
   const [redirecting, setRedirecting] = React.useState(false);
 
   const onClickCountButton = (id: number, totalCount: number, type: "plus" | "minus") => {
@@ -40,7 +43,7 @@ const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
 
-      <SheetContent className="flex flex-col justify-between pb-0 bg-[#F4F1EE]">
+      <SheetContent className="flex flex-col justify-between pb-0 bg-gray-100  dark:bg-gray-800">
         <div className={cn("flex flex-col h-full", !totalAmount && "justify-center")}>
           {totalAmount > 0 && (
             <SheetHeader>
@@ -98,7 +101,7 @@ const CartDrawer: React.FC<React.PropsWithChildren<Props>> = ({ children }) => {
                 ))}
               </div>
 
-              <SheetFooter className="-mx-6 bg-white p-8">
+              <SheetFooter className="-mx-6 bg-white dark:bg-gray-900 p-8">
                 <div className="w-full">
                   <div className="flex mb-4">
                     <span className="flex flex-1 text-lg text-neutral-500">

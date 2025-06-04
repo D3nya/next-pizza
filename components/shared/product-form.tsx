@@ -4,8 +4,9 @@ import React from "react";
 import { ProductWithRelations } from "@/types/prisma";
 import ChoosePizzaForm from "./choose-pizza-form";
 import ChooseProductForm from "./choose-product-form";
-import { useCartStore } from "@/store/cart";
+
 import { useToast } from "@/hooks/use-toast";
+import { useCartActions, useCartLoading } from "@/store/cart";
 
 type Props = {
   product: ProductWithRelations;
@@ -14,7 +15,8 @@ type Props = {
 };
 
 const ProductForm: React.FC<Props> = ({ product, full, onSubmit }) => {
-  const { addCartItem, loading } = useCartStore();
+  const { addCartItem } = useCartActions();
+  const loading = useCartLoading();
   const { toast } = useToast();
 
   const firstItem = product.productItems[0];

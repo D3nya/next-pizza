@@ -24,7 +24,7 @@ export const AuthModal: React.FC = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <ProfileButton onClickSignIn={() => setOpen(true)} />
-      <DialogContent className="w-[450px] bg-white p-10">
+      <DialogContent className="w-[450px] bg-white dark:bg-gray-800 p-10">
         {type === "login" ? <LoginForm handleClose={handleClose} /> : <RegisterForm handleClose={handleClose} />}
 
         <hr />

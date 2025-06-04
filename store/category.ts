@@ -1,11 +1,25 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
-type State = {
-  activeId: number;
-  setActiveId: (activeId: number) => void;
+type CategoryState = {
+  activeCategoryId: number;
+  actions: {
+    setActiveCategoryId: (activeCategoryId: number) => void;
+  };
 };
 
-export const useCategoryStore = create<State>()((set) => ({
-  activeId: 1,
-  setActiveId: (activeId: number) => set({ activeId }),
-}));
+const useCategoryStore = create<CategoryState>()(
+  devtools(
+    (set) => ({
+      activeCategoryId: 1,
+      actions: {
+        setActiveCategoryId: (activeCategoryId: number) => set({ activeCategoryId }),
+      },
+    }),
+    { name: "CategoryStore" }
+  )
+);
+
+export const useActiveCategoryId = () => useCategoryStore((state) => state.activeCategoryId);
+
+export const useCategoryActions = () => useCategoryStore((state) => state.actions);
