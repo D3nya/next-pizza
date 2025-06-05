@@ -28,6 +28,7 @@ export default function CheckoutPage() {
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutFormSchema),
+    mode: "onBlur",
     defaultValues: {
       email: "",
       firstName: "",
