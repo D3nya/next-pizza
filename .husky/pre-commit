@@ -1,3 +1,22 @@
+echo "🔍 Running TypeScript type check..."
 npx tsc --noEmit
+if [ $? -ne 0 ]; then
+  echo "❌ TypeScript check failed. Please fix the errors."
+  exit 1
+fi
+
+echo "🎨 Running Prettier..."
 npm run prettier
+if [ $? -ne 0 ]; then
+  echo "❌ Prettier formatting failed. Please fix the issues."
+  exit 1
+fi
+
+echo "🧹 Running ESLint..."
 npm run lint
+if [ $? -ne 0 ]; then
+  echo "❌ Lint check failed. Please fix the issues."
+  exit 1
+fi
+
+echo "✅ Pre-commit checks passed."

@@ -1,0 +1,6 @@
+echo "🔍 Running commitlint..."
+echo "💡 For allowed types, scopes and format check commitlint config"
+
+npx --no --commitlint --edit "$1"
+
+echo "✅ Commit check passed."
