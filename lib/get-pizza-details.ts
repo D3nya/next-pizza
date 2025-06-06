@@ -1,5 +1,6 @@
 import { Ingredient, ProductItem } from "@prisma/client";
-import { PizzaSize, PizzaType, mapPizzaType } from "../constants/products";
+
+import { mapPizzaType, PizzaSize, PizzaType } from "../constants/products";
 import { calcTotalPrice } from "./calc-total-price";
 
 export const getPizzaDetails = (
@@ -7,7 +8,7 @@ export const getPizzaDetails = (
   size: PizzaSize,
   productItems: ProductItem[],
   ingredients: Ingredient[],
-  selectedIngredients: Set<number>
+  selectedIngredients: Set<number>,
 ) => {
   const totalPrice = calcTotalPrice(productItems, ingredients, selectedIngredients, { type, size });
 

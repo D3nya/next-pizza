@@ -1,36 +1,42 @@
 "use client";
 
-import { Api } from "@/services/api-client";
-import { IStory } from "@/services/stories";
-import { useEffect, useRef, useState } from "react";
-import Container from "./container";
 import { X } from "lucide-react";
-import ReactStories from "react-insta-stories";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
+import React from "react";
+import ReactStories from "react-insta-stories";
 import { useClickAway } from "react-use";
 
-type Props = {
-  className?: string;
-};
+import { cn } from "@/lib/utils";
+import { Api } from "@/services/api-client";
+import { IStory } from "@/services/stories";
 
-export const Stories: React.FC<Props> = ({ className }) => {
-  const ref = useRef(null);
-  const [stories, setStories] = useState<IStory[]>([]);
-  const [open, setOpen] = useState(false);
-  const [selectedStory, setSelectedStory] = useState<IStory>();
+import Container from "./container";
+
+interface StoriesProps {
+  className?: string;
+}
+
+export const Stories: React.FC<StoriesProps> = ({ className = "" }) => {
+  const ref = React.useRef(null);
+  const [stories, setStories] = React.useState<IStory[]>([]);
+  const [open, setOpen] = React.useState(false);
+  const [selectedStory, setSelectedStory] = React.useState<IStory>();
 
   useClickAway(ref, () => {
     handleCloseStory();
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     async function fetchStories() {
-      const data = await Api.stories.getAll();
-      setStories(data);
+      try {
+        const data = await Api.stories.getAll();
+        setStories(data);
+      } catch (error) {
+        console.error("Ошибка при получении сторис:", error);
+      }
     }
 
-    fetchStories();
+    void fetchStories();
   }, []);
 
   const handleCloseStory = () => {
@@ -50,13 +56,13 @@ export const Stories: React.FC<Props> = ({ className }) => {
     <>
       <Container
         className={cn(
-          "flex items-center justify-between gap-4 my-10 py-2 overflow-x-auto overscroll-contain",
-          className
+          "my-10 flex items-center justify-between gap-4 overflow-x-auto overscroll-contain py-2",
+          className,
         )}
       >
         {stories.length === 0 &&
-          [...Array(6)].map((_, index) => (
-            <div key={index} className="w-[200px] h-[250px] bg-gray-200 rounded-md animate-pulse" />
+          [...Array<undefined>(6)].map((_, index) => (
+            <div key={index} className="h-[250px] w-[200px] animate-pulse rounded-md bg-gray-200" />
           ))}
 
         {stories.map((story) => (
@@ -64,7 +70,7 @@ export const Stories: React.FC<Props> = ({ className }) => {
             alt="Story image"
             key={story.id}
             onClick={() => onClickStory(story)}
-            className="rounded-md cursor-pointer w-[200px] h-[250px]"
+            className="h-[250px] w-[200px] cursor-pointer rounded-md"
             height={250}
             width={200}
             src={story.previewImageUrl}
@@ -72,15 +78,15 @@ export const Stories: React.FC<Props> = ({ className }) => {
         ))}
 
         {open && (
-          <div className="absolute left-0 top-0 w-full h-full bg-black/80 flex items-center justify-center z-30">
+          <div className="absolute left-0 top-0 z-30 flex size-full items-center justify-center bg-black/80">
             <div ref={ref} className="relative" style={{ width: 520 }}>
               <button className="absolute -right-10 -top-5 z-30" onClick={handleCloseStory}>
-                <X className="absolute top-0 right-0 w-8 h-8 text-white/50" />
+                <X className="absolute right-0 top-0 size-8 text-white/50" />
               </button>
 
               <ReactStories
                 onAllStoriesEnd={handleCloseStory}
-                stories={selectedStory?.items.map((item) => ({ url: item.sourceUrl })) || []}
+                stories={selectedStory?.items.map((item) => ({ url: item.sourceUrl })) ?? []}
                 defaultInterval={4000}
                 width={520}
                 height={800}

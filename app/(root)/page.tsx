@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import Container from "@/components/shared/container";
 import Filters from "@/components/shared/filters";
 import ProductsList from "@/components/shared/products-list";
@@ -5,7 +7,6 @@ import { Stories } from "@/components/shared/srories";
 import Title from "@/components/shared/title";
 import TopBar from "@/components/shared/top-bar";
 import { findPizzas, GetSearchParams } from "@/lib/find-pizzas";
-import { Suspense } from "react";
 
 type SearchParams = Promise<GetSearchParams>;
 

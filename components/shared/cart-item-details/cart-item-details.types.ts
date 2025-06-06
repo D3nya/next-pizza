@@ -1,4 +1,4 @@
-export type CartItemProps = {
+export interface CartItemProps {
   id: number;
   imageUrl: string;
   details: string;
@@ -6,4 +6,4 @@ export type CartItemProps = {
   price: number;
   totalCount: number;
   disabled?: boolean;
-};
+}

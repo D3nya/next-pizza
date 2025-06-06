@@ -1,5 +1,9 @@
 "use server";
 
+import { OrderStatus, Prisma } from "@prisma/client";
+import { hashSync } from "bcrypt";
+import { cookies } from "next/headers";
+
 import { auth } from "@/auth";
 import { PayOrderTemplate } from "@/components/shared/email-templates/pay-order";
 import { VerificationUserTemplate } from "@/components/shared/email-templates/verification-user";
@@ -7,9 +11,6 @@ import { CheckoutFormValues } from "@/constants/checkout-form-schema";
 import { callbackPayment, createPayment } from "@/lib/create-payment";
 import { sendEmail } from "@/lib/send-email";
 import { prisma } from "@/prisma/prisma-client";
-import { OrderStatus, Prisma } from "@prisma/client";
-import { hashSync } from "bcrypt";
-import { cookies } from "next/headers";
 
 export async function createOrder(data: CheckoutFormValues) {
   try {
@@ -79,7 +80,7 @@ export async function createOrder(data: CheckoutFormValues) {
       description: "Оплата заказа #" + order.id,
     });
 
-    if (!paymentData || !paymentData.id || !paymentData.returnUrl) {
+    if (!paymentData?.id || !paymentData.returnUrl) {
       throw new Error("Payment data not found");
     }
 
@@ -101,7 +102,7 @@ export async function createOrder(data: CheckoutFormValues) {
         orderId: order.id,
         totalAmount: order.totalAmount,
         paymentUrl,
-      }) as React.ReactNode
+      }) as React.ReactNode,
     );
 
     await callbackPayment({ orderId: order.id });
@@ -192,7 +193,7 @@ export async function registerUser(body: Prisma.UserCreateInput) {
       "Next Pizza / Подтверждение регистрации",
       VerificationUserTemplate({
         code,
-      }) as React.ReactNode
+      }) as React.ReactNode,
     );
   } catch (err) {
     console.log("Error [CREATE_USER]", err);

@@ -1,14 +1,82 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+// @ts-nocheck
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { globalIgnores } from "eslint/config";
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+import reactPlugin from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import jsxA11y from "eslint-plugin-jsx-a11y";
+import tailwind from "eslint-plugin-tailwindcss";
+import importPlugin from "eslint-plugin-import";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
+import { flatConfig } from "@next/eslint-plugin-next";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+export default tseslint.config(
+  // Ignores
+  globalIgnores([".next/**/*", "**/components/ui/", "**/node_modules/", ".git/"]),
+  // Next
+  flatConfig.coreWebVitals,
 
-const eslintConfig = [...compat.extends("next/core-web-vitals", "next/typescript", "prettier")];
+  // JS
+  eslint.configs.recommended,
 
-export default eslintConfig;
+  // TS
+  tseslint.configs.stylisticTypeChecked,
+  tseslint.configs.recommendedTypeChecked,
+
+  // React
+  reactPlugin.configs.flat.recommended,
+  reactPlugin.configs.flat["jsx-runtime"],
+
+  // React Hooks
+  reactHooks.configs["recommended-latest"],
+
+  // JSX A11y
+  jsxA11y.flatConfigs.recommended,
+
+  // Imports
+  importPlugin.flatConfigs.recommended,
+  importPlugin.flatConfigs.typescript,
+
+  // Tailwind
+  ...tailwind.configs["flat/recommended"],
+
+  //... other configs
+
+  // Prettier
+  eslintConfigPrettier,
+  {
+    files: ["**/*.{ts,tsx}"],
+
+    // TypeScript ESLint parser for TS files
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+
+    // Imports resolver
+    settings: {
+      "import/resolver": {
+        typescript: true,
+        node: true,
+      },
+      react: {
+        version: "detect",
+      },
+    },
+
+    plugins: {
+      // Imports sort
+      "simple-import-sort": simpleImportSort,
+    },
+
+    // Custom rule to overwrite/modify or to disable if necessary
+    rules: {
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
+    },
+  },
+);

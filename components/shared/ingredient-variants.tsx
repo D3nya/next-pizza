@@ -1,19 +1,20 @@
-import React from "react";
 import { Ingredient } from "@prisma/client";
+import React from "react";
 
-import IngredientItem from "./ingredient-item";
 import { cn } from "@/lib/utils";
 
-type Props = {
+import IngredientItem from "./ingredient-item";
+
+interface Props {
   ingredients: Ingredient[];
   addIngredient: (id: number) => void;
   selectedIngredients: Set<number>;
   className?: string;
-};
+}
 
 const IngredientVariants: React.FC<Props> = ({ className, ingredients, addIngredient, selectedIngredients }) => {
   return (
-    <div className={cn("bg-gray-50 rounded-md h-[420px] overflow-auto scrollbar", className)}>
+    <div className={cn("scrollbar h-[420px] overflow-auto rounded-md bg-gray-50", className)}>
       <div className="grid grid-cols-3 gap-3">
         {ingredients.map((ingredient) => (
           <IngredientItem

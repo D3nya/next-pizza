@@ -1,13 +1,15 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import Image from "next/image";
+import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
+
 import { registerUser } from "@/app/actions";
 import { FormInput } from "@/components/shared/form/form-input";
 import { Button } from "@/components/ui/button";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { formRegisterSchema, TFormRegisterValues } from "@/constants/auth-form-schema";
 import { useToast } from "@/hooks/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import Image from "next/image";
-import { FormProvider, useForm } from "react-hook-form";
 
 interface Props {
   handleClose: VoidFunction;
@@ -15,7 +17,7 @@ interface Props {
 
 export const RegisterForm: React.FC<Props> = ({ handleClose }) => {
   const { toast } = useToast();
-  const form = useForm<TFormRegisterValues>({
+  const methods = useForm<TFormRegisterValues>({
     resolver: zodResolver(formRegisterSchema),
     defaultValues: {
       email: "",
@@ -24,6 +26,8 @@ export const RegisterForm: React.FC<Props> = ({ handleClose }) => {
       confirmPassword: "",
     },
   });
+
+  const { handleSubmit, formState } = methods;
 
   const onSubmit = async (data: TFormRegisterValues) => {
     try {
@@ -49,19 +53,19 @@ export const RegisterForm: React.FC<Props> = ({ handleClose }) => {
     }
   };
 
-  const loading = form.formState.isSubmitting;
+  const loading = formState.isSubmitting;
 
   return (
-    <FormProvider {...form}>
-      <form className="flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex justify-between items-center">
+    <FormProvider {...methods}>
+      <form className="flex flex-col gap-5" onSubmit={void handleSubmit(onSubmit)}>
+        <div className="flex items-center justify-between">
           <div className="mr-2">
-            <DialogTitle className="font-bold text-[26px]">Регистрация</DialogTitle>
+            <DialogTitle className="text-[26px] font-bold">Регистрация</DialogTitle>
             <DialogDescription className="text-gray-400">
               Введите свою почту, полное имя и пароль чтобы создать аккаунт
             </DialogDescription>
           </div>
-          <Image src="/assets/images/phone-icon.png" alt="Phone" width={64} height={64} className="w-16 h-16" />
+          <Image src="/assets/images/phone-icon.png" alt="Phone" width={64} height={64} className="size-16" />
         </div>
         <FormInput name="email" label="E-Mail" required />
         <FormInput name="fullName" label="Полное имя" required />

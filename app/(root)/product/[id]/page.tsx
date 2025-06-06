@@ -1,9 +1,8 @@
-import React from "react";
-import { prisma } from "@/prisma/prisma-client";
 import { notFound } from "next/navigation";
 
 import Container from "@/components/shared/container";
 import ProductForm from "@/components/shared/product-form";
+import { prisma } from "@/prisma/prisma-client";
 
 type Params = Promise<{ id: string }>;
 
@@ -37,7 +36,7 @@ export default async function ProductPage(props: { params: Params }) {
   }
 
   return (
-    <Container className="flex flex-col my-10">
+    <Container className="my-10 flex flex-col">
       <ProductForm product={product} full={true} />
     </Container>
   );

@@ -1,4 +1,5 @@
 import { Ingredient, ProductItem } from "@prisma/client";
+
 import { PizzaSize, PizzaType, ProductQuantityValue } from "../constants/products";
 
 /**
@@ -19,15 +20,15 @@ export const calcTotalPrice = (
     type?: PizzaType;
     size?: PizzaSize;
     quantity?: ProductQuantityValue;
-  }
+  },
 ): number => {
   let productPrice;
 
   if (productItems[0].pizzaSize) {
     productPrice =
-      productItems.find((item) => item.pizzaType === product.type && item.pizzaSize === product.size)?.price || 0;
+      productItems.find((item) => item.pizzaType === product.type && item.pizzaSize === product.size)?.price ?? 0;
   } else {
-    productPrice = productItems.find((item) => item.quantity === product.quantity)?.price || 0;
+    productPrice = productItems.find((item) => item.quantity === product.quantity)?.price ?? 0;
   }
 
   const totalIngredientsPrice = ingredients

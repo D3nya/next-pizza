@@ -1,7 +1,8 @@
-import { prisma } from "@/prisma/prisma-client";
 import { Prisma } from "@prisma/client";
 
-export type GetSearchParams = {
+import { prisma } from "@/prisma/prisma-client";
+
+export interface GetSearchParams {
   query?: string;
   sortBy?: string;
   pizzaSizes?: string;
@@ -9,7 +10,7 @@ export type GetSearchParams = {
   ingredients?: string;
   priceFrom?: string;
   priceTo?: string;
-};
+}
 
 export type CategoryWithRelations = Prisma.CategoryGetPayload<{
   include: {

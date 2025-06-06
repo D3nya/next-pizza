@@ -2,17 +2,18 @@
 
 import React from "react";
 
-import Title from "./title";
-import { Input } from "../ui/input";
-import RangeSlider from "./range-slider";
-import CheckboxFiltersGroup from "./checkbox-filters-group";
 import { useIngredients } from "@/hooks/use-filter-ingredients";
 import { useFilters } from "@/hooks/use-filters";
 import { useQueryFilters } from "@/hooks/use-query-filters";
 
-type Props = {
+import { Input } from "../ui/input";
+import CheckboxFiltersGroup from "./checkbox-filters-group";
+import RangeSlider from "./range-slider";
+import Title from "./title";
+
+interface Props {
   className?: string;
-};
+}
 
 const Filters: React.FC<Props> = ({ className }) => {
   const { ingredients, loading } = useIngredients();
@@ -60,8 +61,8 @@ const Filters: React.FC<Props> = ({ className }) => {
 
       {/* Price filter */}
       <div className="mt-5 border-y border-y-neutral-100 py-6 pb-7">
-        <p className="font-bold mb-3">Цена от и до:</p>
-        <div className="flex gap-3 mb-5">
+        <p className="mb-3 font-bold">Цена от и до:</p>
+        <div className="mb-5 flex gap-3">
           <Input
             type="number"
             placeholder="0"
@@ -83,7 +84,7 @@ const Filters: React.FC<Props> = ({ className }) => {
           min={0}
           max={2000}
           step={10}
-          value={[filters.prices.priceFrom || 0, filters.prices.priceTo || 2000]}
+          value={[filters.prices.priceFrom ?? 0, filters.prices.priceTo ?? 2000]}
           onValueChange={updatePrices}
         />
       </div>

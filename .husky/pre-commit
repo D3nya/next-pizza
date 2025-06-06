@@ -6,14 +6,14 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "🎨 Running Prettier..."
-npm run prettier
+npm run prettier:fix
 if [ $? -ne 0 ]; then
   echo "❌ Prettier formatting failed. Please fix the issues."
   exit 1
 fi
 
 echo "🧹 Running ESLint..."
-npm run lint
+npm run lint:fix
 if [ $? -ne 0 ]; then
   echo "❌ Lint check failed. Please fix the issues."
   exit 1

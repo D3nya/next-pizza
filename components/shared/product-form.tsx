@@ -1,18 +1,19 @@
 "use client";
 
 import React from "react";
-import { ProductWithRelations } from "@/types/prisma";
-import ChoosePizzaForm from "./choose-pizza-form";
-import ChooseProductForm from "./choose-product-form";
 
 import { useToast } from "@/hooks/use-toast";
 import { useCartActions, useCartLoading } from "@/store/cart";
+import { ProductWithRelations } from "@/types/prisma";
 
-type Props = {
+import ChoosePizzaForm from "./choose-pizza-form";
+import ChooseProductForm from "./choose-product-form";
+
+interface Props {
   product: ProductWithRelations;
   full?: boolean;
   onSubmit?: VoidFunction;
-};
+}
 
 const ProductForm: React.FC<Props> = ({ product, full, onSubmit }) => {
   const { addCartItem } = useCartActions();

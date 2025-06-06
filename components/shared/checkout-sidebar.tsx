@@ -1,9 +1,12 @@
-import { cn } from "@/lib/utils";
-import { WhiteBlock } from "./white-block";
-import { Skeleton } from "../ui/skeleton";
 import { ArrowRight, Loader2, Package, Percent, Truck } from "lucide-react";
+import React from "react";
+
+import { cn } from "@/lib/utils";
+
 import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton";
 import { CheckoutItemDetails } from "./checkout-item-details";
+import { WhiteBlock } from "./white-block";
 
 const VAT = 15;
 const DELIVERY_PRICE = 250;
@@ -19,7 +22,7 @@ export const CheckoutSidebar: React.FC<Props> = ({ totalAmount, loading, classNa
   const totalPrice = totalAmount + DELIVERY_PRICE + vatPrice;
 
   return (
-    <WhiteBlock className={cn("p-6 sticky top-4", className)}>
+    <WhiteBlock className={cn("sticky top-4 p-6", className)}>
       <div className="flex flex-col gap-1">
         <span className="text-xl">Итого:</span>
         {loading ? (
@@ -58,14 +61,14 @@ export const CheckoutSidebar: React.FC<Props> = ({ totalAmount, loading, classNa
       />
 
       {loading ? (
-        <Button disabled className="w-full h-14 rounded-2xl mt-6 text-base font-bold">
+        <Button disabled className="mt-6 h-14 w-full rounded-2xl text-base font-bold">
           <Loader2 className="animate-spin" />
           Подождите
         </Button>
       ) : (
-        <Button type="submit" className="w-full h-14 rounded-2xl mt-6 text-base font-bold">
+        <Button type="submit" className="mt-6 h-14 w-full rounded-2xl text-base font-bold">
           Перейти к оплате
-          <ArrowRight className="w-5 ml-2" />
+          <ArrowRight className="ml-2 w-5" />
         </Button>
       )}
     </WhiteBlock>

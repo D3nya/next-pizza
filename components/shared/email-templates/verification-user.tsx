@@ -5,7 +5,7 @@ interface Props {
 }
 
 export const VerificationUserTemplate: React.FC<Props> = ({ code }) => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (typeof window !== "undefined" ? window.location.origin : "");
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? (typeof window !== "undefined" ? window.location.origin : "");
   const verificationUrl = `${baseUrl}/api/auth/verify?code=${code}`;
 
   return (

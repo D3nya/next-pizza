@@ -16,8 +16,8 @@ const useCategoryStore = create<CategoryState>()(
         setActiveCategoryId: (activeCategoryId: number) => set({ activeCategoryId }),
       },
     }),
-    { name: "CategoryStore" }
-  )
+    { name: "CategoryStore" },
+  ),
 );
 
 export const useActiveCategoryId = () => useCategoryStore((state) => state.activeCategoryId);

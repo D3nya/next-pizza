@@ -1,7 +1,7 @@
-import React from "react";
-import { prisma } from "@/prisma/prisma-client";
 import { notFound } from "next/navigation";
+
 import ChooseProductModal from "@/components/shared/modals/choose-product-modal";
+import { prisma } from "@/prisma/prisma-client";
 
 type Params = Promise<{ id: string }>;
 

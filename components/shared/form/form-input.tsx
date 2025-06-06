@@ -1,16 +1,18 @@
 "use client";
 
+import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
+import { IMaskMixin } from "react-imask";
+
+import { Input } from "@/components/ui/input";
+
 import { ClearButton } from "../clear-button";
 import { ErrorText } from "../error-text";
-import { Input } from "@/components/ui/input";
 import { RequiredSymbol } from "../required-symbol";
-import { HTMLInputTypeAttribute } from "react";
-import { IMaskMixin } from "react-imask";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   name: string;
-  type?: HTMLInputTypeAttribute;
+  type?: React.HTMLInputTypeAttribute;
   label?: string;
   required?: boolean;
   className?: string;
@@ -30,7 +32,7 @@ export const FormInput: React.FC<Props> = ({ className, name, label, required, t
     setValue,
   } = useFormContext();
 
-  const value = watch(name);
+  const value = watch(name) as string;
   const errorText = errors[name]?.message as string | undefined;
 
   const onClickClear = () => {
@@ -40,7 +42,7 @@ export const FormInput: React.FC<Props> = ({ className, name, label, required, t
   return (
     <div className={className}>
       {label && (
-        <p className="font-medium mb-2">
+        <p className="mb-2 font-medium">
           {label} {required && <RequiredSymbol />}
         </p>
       )}
@@ -52,9 +54,10 @@ export const FormInput: React.FC<Props> = ({ className, name, label, required, t
             control={control}
             render={({ field: { onChange, value, onBlur, ref } }) => (
               <MaskedStyledInput
-                className="h-12 text-md"
+                className="h-12"
                 ref={ref}
                 onBlur={onBlur}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 value={value}
                 onAccept={onChange}
                 unmask={false}
@@ -64,7 +67,7 @@ export const FormInput: React.FC<Props> = ({ className, name, label, required, t
             )}
           />
         ) : (
-          <Input placeholder={placeholder} type={type} className="h-12 text-md" {...register(name)} {...props} />
+          <Input placeholder={placeholder} type={type} className="h-12 text-base" {...register(name)} {...props} />
         )}
         {value && <ClearButton onClick={onClickClear} />}
       </div>

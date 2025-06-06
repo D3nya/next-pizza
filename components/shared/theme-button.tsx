@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
-import { useTheme } from "next-themes";
-
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
 import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import React from "react";
+
+import { Button } from "../ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 const themes = [
   { value: "light", label: "Светлая" },
@@ -28,7 +28,7 @@ const ThemeButton = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" aria-label="Переключить тему">
-          {isDark ? <Moon className="h-[1.2rem] w-[1.2rem]" /> : <Sun className="h-[1.2rem] w-[1.2rem]" />}
+          {isDark ? <Moon className="size-[1.2rem]" /> : <Sun className="size-[1.2rem]" />}
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>

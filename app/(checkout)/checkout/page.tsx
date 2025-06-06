@@ -1,19 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { checkoutFormSchema, CheckoutFormValues } from "@/constants/checkout-form-schema";
-import Container from "@/components/shared/container";
-import Title from "@/components/shared/title";
-import { CheckoutCart } from "@/components/shared/checkout/checkout-cart";
-import { CheckoutAddressForm } from "@/components/shared/checkout/checkout-address-form";
-import { CheckoutPersonalForm } from "@/components/shared/checkout/checkout-personal-form";
-import { CheckoutSidebar } from "@/components/shared/checkout-sidebar";
-import { createOrder } from "@/app/actions";
-import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+
+import { createOrder } from "@/app/actions";
+import { CheckoutAddressForm } from "@/components/shared/checkout/checkout-address-form";
+import { CheckoutCart } from "@/components/shared/checkout/checkout-cart";
+import { CheckoutPersonalForm } from "@/components/shared/checkout/checkout-personal-form";
+import { CheckoutSidebar } from "@/components/shared/checkout-sidebar";
+import Container from "@/components/shared/container";
+import Title from "@/components/shared/title";
+import { checkoutFormSchema, CheckoutFormValues } from "@/constants/checkout-form-schema";
+import { toast } from "@/hooks/use-toast";
 import { Api } from "@/services/api-client";
 import { useCartActions, useCartItems, useCartLoading, useCartTotal } from "@/store/cart";
 
@@ -26,7 +27,7 @@ export default function CheckoutPage() {
   const totalAmount = useCartTotal();
   const loading = useCartLoading();
 
-  const form = useForm<CheckoutFormValues>({
+  const methods = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutFormSchema),
     mode: "onBlur",
     defaultValues: {
@@ -39,20 +40,26 @@ export default function CheckoutPage() {
     },
   });
 
-  async function fetchUserInfo() {
-    const data = await Api.auth.getMe();
-    const [firstName, lastName] = data.fullName.split(" ");
-
-    form.setValue("firstName", firstName);
-    form.setValue("lastName", lastName);
-    form.setValue("email", data.email);
-  }
+  const { setValue, handleSubmit } = methods;
 
   useEffect(() => {
-    if (data) {
-      fetchUserInfo();
+    async function fetchUserInfo() {
+      try {
+        const data = await Api.auth.getMe();
+        const [firstName, lastName] = data.fullName.split(" ");
+
+        setValue("firstName", firstName);
+        setValue("lastName", lastName);
+        setValue("email", data.email);
+      } catch (error) {
+        console.error("Ошибка при получении пользователя:", error);
+      }
     }
-  }, [data]);
+
+    if (data) {
+      fetchUserInfo().catch((e) => console.error("Ошибка при получении данных пользователя:", e));
+    }
+  }, [data, setValue]);
 
   const onSubmit = async (data: CheckoutFormValues) => {
     try {
@@ -81,18 +88,20 @@ export default function CheckoutPage() {
 
   const onClickCountButton = (id: number, totalCount: number, type: "plus" | "minus") => {
     const newQuantity = type === "plus" ? totalCount + 1 : totalCount - 1;
-    updateItemTotalCount(id, newQuantity);
+    updateItemTotalCount(id, newQuantity).catch((e) => {
+      console.error("Ошибка при обновлении количества:", e);
+    });
   };
 
   return (
     <Container className="mt-10">
-      <Title text="Оформление заказа" className="font-extrabold mb-8 text-[36px]" />
+      <Title text="Оформление заказа" className="mb-8 text-[36px] font-extrabold" />
 
-      <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+      <FormProvider {...methods}>
+        <form onSubmit={void handleSubmit(onSubmit)}>
           <div className="flex gap-10">
             {/* Left */}
-            <div className="flex flex-col gap-10 flex-1 mb-20">
+            <div className="mb-20 flex flex-1 flex-col gap-10">
               <CheckoutCart
                 onClickCountButton={onClickCountButton}
                 removeCartItem={removeCartItem}
@@ -100,9 +109,9 @@ export default function CheckoutPage() {
                 loading={loading}
               />
 
-              <CheckoutAddressForm className={loading ? "opacity-40 pointer-events-none" : ""} />
+              <CheckoutAddressForm className={loading ? "pointer-events-none opacity-40" : ""} />
 
-              <CheckoutPersonalForm className={loading ? "opacity-40 pointer-events-none" : ""} />
+              <CheckoutPersonalForm className={loading ? "pointer-events-none opacity-40" : ""} />
             </div>
 
             {/* Right */}

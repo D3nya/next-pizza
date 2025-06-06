@@ -1,7 +1,8 @@
-import { generateFakePaymentCallbackData } from "@/constants/fake-payment-callback-data";
-import { PaymentCallbackData } from "@/types/payment";
 import axios from "axios";
 import { randomUUID } from "crypto";
+
+import { generateFakePaymentCallbackData } from "@/constants/fake-payment-callback-data";
+import { PaymentCallbackData } from "@/types/payment";
 
 interface FakeData {
   orderId: number;

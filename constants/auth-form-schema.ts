@@ -25,7 +25,7 @@ export const formRegisterSchema = formLoginSchema
           message: "Имя и фамилия должны содержать только буквы и пробелы",
         }),
       confirmPassword: passwordSchema,
-    })
+    }),
   )
   .refine((data) => data.password === data.confirmPassword, {
     message: "Пароли не совпадают",

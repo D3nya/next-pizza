@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { prisma } from "@/prisma/prisma-client";
+import { NextRequest, NextResponse } from "next/server";
+
 import { findOrCreateCart } from "@/lib/find-or-create-cart";
-import { CreateCartItemValues } from "@/services/dto/cart.dto";
 import { updateCartTotalAmount } from "@/lib/update-cart-total-amount";
+import { prisma } from "@/prisma/prisma-client";
+import { CreateCartItemValues } from "@/services/dto/cart.dto";
 
 export async function GET(req: NextRequest) {
   try {
@@ -53,9 +54,7 @@ export async function POST(req: NextRequest) {
   try {
     let token = req.cookies.get("cartToken")?.value;
 
-    if (!token) {
-      token = crypto.randomUUID();
-    }
+    token ??= crypto.randomUUID();
 
     const userCart = await findOrCreateCart(token);
 

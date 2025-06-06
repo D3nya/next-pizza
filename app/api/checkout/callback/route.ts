@@ -1,11 +1,12 @@
+import { OrderStatus } from "@prisma/client";
+import { NextRequest, NextResponse } from "next/server";
+
 import { OrderFailedTemplate } from "@/components/shared/email-templates/order-failed";
 import { OrderSuccessTemplate } from "@/components/shared/email-templates/order-success";
 import { sendEmail } from "@/lib/send-email";
 import { prisma } from "@/prisma/prisma-client";
 import { CartItemDTO } from "@/services/dto/cart.dto";
 import { PaymentCallbackData } from "@/types/payment";
-import { OrderStatus } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
@@ -38,13 +39,13 @@ export async function POST(req: NextRequest) {
       await sendEmail(
         order.email,
         "Next Pizza | Ваш заказ успешно оформлен!",
-        OrderSuccessTemplate({ orderId: order.id, items }) as React.ReactNode
+        OrderSuccessTemplate({ orderId: order.id, items }) as React.ReactNode,
       );
     } else {
       await sendEmail(
         order.email,
         "Next Pizza | К сожалению не удалось оплатить заказ.",
-        OrderFailedTemplate({ orderId: order.id, items }) as React.ReactNode
+        OrderFailedTemplate({ orderId: order.id, items }) as React.ReactNode,
       );
     }
 

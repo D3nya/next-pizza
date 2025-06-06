@@ -1,9 +1,10 @@
-import React from "react";
-import { Toaster } from "../ui/toaster";
-import { ThemeProvider } from "./theme-provider";
-import NextTopLoader from "nextjs-toploader";
 import { SessionProvider } from "next-auth/react";
+import NextTopLoader from "nextjs-toploader";
+import React from "react";
+
+import { Toaster } from "../ui/toaster";
 import CartProvider from "./cart-provider";
+import { ThemeProvider } from "./theme-provider";
 
 export const Providers: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (

@@ -1,15 +1,15 @@
-import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
+import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { signIn } from "next-auth/react";
 import { FormInput } from "@/components/shared/form/form-input";
 import { Button } from "@/components/ui/button";
-import { formLoginSchema, TFormLoginValues } from "@/constants/auth-form-schema";
 import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { formLoginSchema, TFormLoginValues } from "@/constants/auth-form-schema";
+import { useToast } from "@/hooks/use-toast";
 
 interface Props {
   handleClose: VoidFunction;
@@ -17,13 +17,15 @@ interface Props {
 
 export const LoginForm: React.FC<Props> = ({ handleClose }) => {
   const { toast } = useToast();
-  const form = useForm<TFormLoginValues>({
+  const methods = useForm<TFormLoginValues>({
     resolver: zodResolver(formLoginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
+
+  const { handleSubmit, formState } = methods;
 
   const onSubmit = async (data: TFormLoginValues) => {
     try {
@@ -52,19 +54,19 @@ export const LoginForm: React.FC<Props> = ({ handleClose }) => {
     }
   };
 
-  const loading = form.formState.isSubmitting;
+  const loading = formState.isSubmitting;
 
   return (
-    <FormProvider {...form}>
-      <form className="flex flex-col gap-5" onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex justify-between items-center">
+    <FormProvider {...methods}>
+      <form className="flex flex-col gap-5" onSubmit={void handleSubmit(onSubmit)}>
+        <div className="flex items-center justify-between">
           <div className="mr-2">
-            <DialogTitle className="font-bold text-[26px]">Вход в аккаунт</DialogTitle>
+            <DialogTitle className="text-[26px] font-bold">Вход в аккаунт</DialogTitle>
             <DialogDescription className="text-gray-400">
               Введите свою почту, чтобы войти в свой аккаунт
             </DialogDescription>
           </div>
-          <Image src="/assets/images/phone-icon.png" alt="Phone" width={64} height={64} className="w-16 h-16" />
+          <Image src="/assets/images/phone-icon.png" alt="Phone" width={64} height={64} className="size-16" />
         </div>
 
         <FormInput name="email" label="E-Mail" required />

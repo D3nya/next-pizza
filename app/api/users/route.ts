@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "@/prisma/prisma-client";
@@ -9,7 +10,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const data = await req.json();
+  const body = (await req.json()) as unknown;
+
+  const data = body as Prisma.UserCreateInput;
 
   const user = await prisma.user.create({
     data,

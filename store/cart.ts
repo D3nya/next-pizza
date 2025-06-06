@@ -92,8 +92,8 @@ const useCartStore = create<CartState>()(
         },
       },
     }),
-    { name: "CartStore" }
-  )
+    { name: "CartStore" },
+  ),
 );
 
 export const useCartItems = () => useCartStore((state) => state.items);

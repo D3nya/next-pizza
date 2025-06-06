@@ -1,13 +1,15 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useState } from "react";
-import { LoginForm } from "./forms/login-form";
-import { RegisterForm } from "./forms/register-form";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
+import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+
 import { ProfileButton } from "../../profile-button";
+import { LoginForm } from "./forms/login-form";
+import { RegisterForm } from "./forms/register-form";
 
 export const AuthModal: React.FC = () => {
   const [type, setType] = useState<"login" | "register">("login");
@@ -24,7 +26,7 @@ export const AuthModal: React.FC = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <ProfileButton onClickSignIn={() => setOpen(true)} />
-      <DialogContent className="w-[450px] bg-white dark:bg-gray-800 p-10">
+      <DialogContent className="w-[450px] bg-white p-10 dark:bg-gray-800">
         {type === "login" ? <LoginForm handleClose={handleClose} /> : <RegisterForm handleClose={handleClose} />}
 
         <hr />
@@ -32,20 +34,20 @@ export const AuthModal: React.FC = () => {
         <div className="flex gap-2">
           <Button
             variant="secondary"
-            onClick={() => signIn("github", { redirect: true, redirectTo: "/" })}
-            className="gap-2 h-12 p-2 flex-1"
+            onClick={() => void signIn("github", { redirect: true, redirectTo: "/" })}
+            className="h-12 flex-1 gap-2 p-2"
           >
-            <Image className="w-6 h-6" width={24} height={24} src="/assets/images/github.svg" alt="Github" />
+            <Image className="size-6" width={24} height={24} src="/assets/images/github.svg" alt="Github" />
             GitHub
           </Button>
 
           <Button
             variant="secondary"
-            onClick={() => signIn("google", { redirect: true, redirectTo: "/" })}
+            onClick={() => void signIn("google", { redirect: true, redirectTo: "/" })}
             type="button"
-            className="gap-2 h-12 p-2 flex-1"
+            className="h-12 flex-1 gap-2 p-2"
           >
-            <Image className="w-6 h-6" width={24} height={24} src="/assets/images/google.svg" alt="Google" />
+            <Image className="size-6" width={24} height={24} src="/assets/images/google.svg" alt="Google" />
             Google
           </Button>
         </div>

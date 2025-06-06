@@ -74,7 +74,7 @@ body {
 
 /* Scrollbar width */
 ::-webkit-scrollbar {
-  @apply w-2.5 h-2.5;
+  @apply h-2.5 w-2.5;
 }
 
 /* Scrollback track */
@@ -84,5 +84,5 @@ body {
 
 /* Handle scrollbar */
 ::-webkit-scrollbar-thumb {
-  @apply rounded-full bg-primary hover:bg-primary/75 border-[1px] border-transparent border-solid bg-clip-padding;
+  @apply rounded-full border-[1px] border-solid border-transparent bg-primary bg-clip-padding hover:bg-primary/75;
 }

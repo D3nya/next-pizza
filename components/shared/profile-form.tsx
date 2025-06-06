@@ -1,25 +1,28 @@
 "use client";
 
-import { formRegisterSchema, TFormRegisterValues } from "@/constants/auth-form-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@prisma/client";
 import { signOut } from "next-auth/react";
+import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import Container from "./container";
-import Title from "./title";
-import { FormInput } from "./form/form-input";
-import { Button } from "../ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { updateUserInfo } from "@/app/actions";
 
-type Props = {
+import { updateUserInfo } from "@/app/actions";
+import { formRegisterSchema, TFormRegisterValues } from "@/constants/auth-form-schema";
+import { useToast } from "@/hooks/use-toast";
+
+import { Button } from "../ui/button";
+import Container from "./container";
+import { FormInput } from "./form/form-input";
+import Title from "./title";
+
+interface Props {
   data: User;
-};
+}
 
 export const ProfileForm: React.FC<Props> = ({ data }) => {
   const { toast } = useToast();
 
-  const form = useForm({
+  const methods = useForm({
     resolver: zodResolver(formRegisterSchema),
     defaultValues: {
       fullName: data.fullName,
@@ -28,6 +31,8 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
       confirmPassword: "",
     },
   });
+
+  const { handleSubmit, formState } = methods;
 
   const onSubmit = async (data: TFormRegisterValues) => {
     try {
@@ -52,31 +57,29 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
   };
 
   const onClickSignOut = () => {
-    signOut({
-      callbackUrl: "/",
-    });
+    signOut({ callbackUrl: "/" }).catch((e) => console.error("Ошибка при выходе из аккаунта:", e));
   };
 
   return (
     <Container className="my-10">
       <Title text={"Личные данные"} size="md" className="font-bold" />
 
-      <FormProvider {...form}>
-        <form className="flex flex-col gap-5 w-96 mt-10" onSubmit={form.handleSubmit(onSubmit)}>
+      <FormProvider {...methods}>
+        <form className="mt-10 flex w-96 flex-col gap-5" onSubmit={void handleSubmit(onSubmit)}>
           <FormInput name="email" label="E-Mail" required />
           <FormInput name="fullName" label="Полное имя" required />
 
           <FormInput type="password" name="password" label="Новый пароль" required />
           <FormInput type="password" name="confirmPassword" label="Повторите пароль" required />
 
-          <Button disabled={form.formState.isSubmitting} className="text-base mt-10" type="submit">
+          <Button disabled={formState.isSubmitting} className="mt-10 text-base" type="submit">
             Сохранить
           </Button>
 
           <Button
             onClick={onClickSignOut}
             variant="secondary"
-            disabled={form.formState.isSubmitting}
+            disabled={formState.isSubmitting}
             className="text-base"
             type="button"
           >

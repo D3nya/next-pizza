@@ -1,24 +1,24 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
+
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
-import Image from "next/image";
-import Container from "./container";
-import Link from "next/link";
-import SearchInput from "./search-input";
+import AuthBlock from "./auth-block";
 import CartButton from "./cart-button";
+import Container from "./container";
+import SearchInput from "./search-input";
 import ThemeButton from "./theme-button";
 
-import AuthBlock from "./auth-block";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
-
-type Props = {
+interface Props {
   hasSearch: boolean;
   hasCart: boolean;
   className?: string;
-};
+}
 
 const Header: React.FC<Props> = ({ className, hasSearch = true, hasCart = true }) => {
   const router = useRouter();
@@ -30,9 +30,7 @@ const Header: React.FC<Props> = ({ className, hasSearch = true, hasCart = true }
 
     if (queryParams.has("paid")) {
       toastMessage = "Заказ успешно оплачен! Информация отправлена на почту.";
-    }
-
-    if (queryParams.has("verified")) {
+    } else if (queryParams.has("verified")) {
       toastMessage = "Почта успешно подтверждена!";
     }
 
@@ -46,7 +44,7 @@ const Header: React.FC<Props> = ({ className, hasSearch = true, hasCart = true }
         });
       }, 1000);
     }
-  }, [router]);
+  }, [router, queryParams, toast]);
 
   return (
     <header className={cn("border-b", className)}>
@@ -56,8 +54,8 @@ const Header: React.FC<Props> = ({ className, hasSearch = true, hasCart = true }
           <div className="flex items-center gap-4">
             <Image src="/assets/images/logo.png" alt="Logo" width={35} height={35} />
             <div>
-              <h1 className="text-2xl uppercase font-black">Next Pizza</h1>
-              <p className="text-sm text-gray-400 leading-3">вкусней уже некуда</p>
+              <h1 className="text-2xl font-black uppercase">Next Pizza</h1>
+              <p className="text-sm leading-3 text-gray-400">вкусней уже некуда</p>
             </div>
           </div>
         </Link>

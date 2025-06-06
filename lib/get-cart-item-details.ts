@@ -1,18 +1,6 @@
-import { PizzaSize, PizzaType, ProductQuantityValue, mapPizzaType } from "../constants/products";
+import { mapPizzaType, PizzaSize, PizzaType, ProductQuantityValue } from "../constants/products";
 import { CartStateItem } from "./get-cart-details";
-
-const quantityDetails: { [key: string]: string } = {
-  Большая: "Большая",
-  Стандартная: "Стандартная",
-  "0.3": "0.3 л",
-  "0.4": "0.4 л",
-  "0.5": "0.5 л",
-  "1": "1 шт",
-  "2": "2 шт",
-  "3": "3 шт",
-  "4": "4 шт",
-  "5": "5 шт",
-};
+import { quantityDetails } from "./get-product-details";
 
 function detailText(quantity: ProductQuantityValue): string {
   return quantityDetails[quantity] || "Неизвестное количество";
@@ -22,7 +10,7 @@ export const getCartItemDetails = (
   ingredients: CartStateItem["ingredients"],
   pizzaType?: PizzaType,
   pizzaSize?: PizzaSize,
-  quantity?: ProductQuantityValue
+  quantity?: ProductQuantityValue,
 ): string => {
   const details = [];
 

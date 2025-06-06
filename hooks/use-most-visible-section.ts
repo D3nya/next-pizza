@@ -19,7 +19,7 @@ import { useEffect, useRef, useState } from "react";
 export function useMostVisibleSection(
   refs: Record<number, HTMLElement | null>,
   observedIds: number[],
-  options?: IntersectionObserverInit
+  options?: IntersectionObserverInit,
 ): number | null {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const [activeId, setActiveId] = useState<number | null>(null);
@@ -51,7 +51,7 @@ export function useMostVisibleSection(
       {
         threshold: Array.from({ length: 11 }, (_, i) => i / 10), // [0.0, 0.1, ..., 1.0]
         ...options,
-      }
+      },
     );
 
     // Start observing elements based on the current observedIds

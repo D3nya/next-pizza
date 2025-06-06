@@ -1,23 +1,25 @@
 "use client";
 
 import React from "react";
+
 import { cn } from "@/lib/utils";
-import Title from "./title";
-import ProductCard from "./product-card";
 import { ProductWithRelations } from "@/types/prisma";
 
-type Props = {
+import ProductCard from "./product-card";
+import Title from "./title";
+
+interface Props {
   title: string;
   items: ProductWithRelations[];
   categoryId: number;
   className?: string;
   listClassName?: string;
-};
+}
 
 const ProductsGroupList: React.FC<Props> = ({ title, items, listClassName, className }) => {
   return (
     <div className={className} id={title}>
-      <Title text={title} size="lg" className="font-extrabold mb-5" />
+      <Title text={title} size="lg" className="mb-5 font-extrabold" />
 
       <div className={cn("grid grid-cols-3 gap-[50px]", listClassName)}>
         {items.map((product) => (

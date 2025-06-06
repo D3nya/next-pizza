@@ -1,7 +1,10 @@
 import { Minus, Plus } from "lucide-react";
-import { CountButtonProps } from "./count-button";
-import { Button } from "../ui/button";
+import React from "react";
+
 import { cn } from "@/lib/utils";
+
+import { Button } from "../ui/button";
+import { CountButtonProps } from "./count-button";
 
 interface IconButtonProps {
   size?: CountButtonProps["size"];
@@ -22,10 +25,10 @@ export const CountIconButton: React.FC<IconButtonProps> = ({ size = "sm", disabl
       type="button"
       className={cn(
         "p-0 transition-colors",
-        "disabled:bg-white disabled:border-gray-400 disabled:text-gray-400",
+        "disabled:border-gray-400 disabled:bg-white disabled:text-gray-400",
         "hover:bg-primary hover:text-white",
         "dark:bg-gray-800 dark:hover:bg-primary dark:hover:text-gray-800",
-        buttonSizeClass
+        buttonSizeClass,
       )}
     >
       {type === "plus" ? <Plus className={iconSize} /> : <Minus className={iconSize} />}

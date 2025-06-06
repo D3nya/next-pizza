@@ -1,9 +1,11 @@
 import { Ingredient, ProductItem } from "@prisma/client";
-import { calcTotalPrice } from "./calc-total-price";
-import { ProductQuantityValue } from "@/constants/products";
-import { Variant } from "@/components/shared/group-variants";
 
-const quantityDetails: { [key: string]: string } = {
+import { Variant } from "@/components/shared/group-variants";
+import { ProductQuantityValue } from "@/constants/products";
+
+import { calcTotalPrice } from "./calc-total-price";
+
+export const quantityDetails: Record<string, string> = {
   Большая: "Большая",
   Стандартная: "Стандартная",
   "0.3": "0.3 л",
@@ -24,7 +26,7 @@ export const getProductDetails = (
   quantity: ProductQuantityValue,
   productItems: ProductItem[],
   ingredients: Ingredient[],
-  selectedIngredients: Set<number>
+  selectedIngredients: Set<number>,
 ): { totalPrice: number; textDetails: string; availableQuantities: Variant[] } => {
   const totalPrice = calcTotalPrice(productItems, ingredients, selectedIngredients, { quantity });
 
@@ -39,8 +41,8 @@ export const getProductDetails = (
     new Set(
       productItems
         .map((productItem) => productItem.quantity)
-        .filter((q): q is ProductQuantityValue => q !== null && q !== undefined)
-    )
+        .filter((q): q is ProductQuantityValue => q !== null && q !== undefined),
+    ),
   ).map((q) => ({
     name: detailText(q),
     value: q,

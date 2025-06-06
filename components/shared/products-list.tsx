@@ -1,16 +1,18 @@
 "use client";
 
 import React from "react";
-import ProductsGroupList from "./products-group-list";
+
+import { useMostVisibleSection } from "@/hooks/use-most-visible-section";
 import { CategoryWithRelations } from "@/lib/find-pizzas";
 import { useCategoryActions } from "@/store/category";
-import { useMostVisibleSection } from "@/hooks/use-most-visible-section";
+
+import ProductsGroupList from "./products-group-list";
 
 interface ProductsListProps {
   categories: CategoryWithRelations[];
 }
 
-export const ProductsList: React.FC<ProductsListProps> = ({ categories }) => {
+const ProductsList: React.FC<ProductsListProps> = ({ categories }) => {
   const { setActiveCategoryId } = useCategoryActions();
   const sectionRefs = React.useRef<Record<number, HTMLDivElement | null>>({});
   const categoryIds = categories.map((c) => c.id);
@@ -37,7 +39,7 @@ export const ProductsList: React.FC<ProductsListProps> = ({ categories }) => {
               >
                 <ProductsGroupList title={category.name} categoryId={category.id} items={category.products} />
               </div>
-            )
+            ),
         )}
       </div>
     </div>

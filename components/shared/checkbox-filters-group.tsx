@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import FilterCheckbox, { FilterCheckboxProps as Item } from "./filter-checkbox";
+
 import { Input } from "../ui/input";
 import { Skeleton } from "../ui/skeleton";
+import FilterCheckbox, { FilterCheckboxProps as Item } from "./filter-checkbox";
 
-type Props = {
+interface Props {
   title: string;
   items: Item[];
   defaultItems?: Item[];
@@ -17,7 +18,7 @@ type Props = {
   defaultValue?: string[];
   selected?: Set<string>;
   className?: string;
-};
+}
 
 const CheckboxFiltersGroup: React.FC<Props> = ({
   title,
@@ -37,13 +38,13 @@ const CheckboxFiltersGroup: React.FC<Props> = ({
   if (loading) {
     return (
       <div className={className}>
-        <p className="font-bold mb-3">{title}</p>
+        <p className="mb-3 font-bold">{title}</p>
 
         {...Array(limit)
           .fill(0)
-          .map((_, index) => <Skeleton key={index} className="h-6 mb-4 rounded-[8px]" />)}
+          .map((_, index) => <Skeleton key={index} className="mb-4 h-6 rounded-[8px]" />)}
 
-        <Skeleton className="w-28 h-6 mb-4 rounded-[8px]" />
+        <Skeleton className="mb-4 h-6 w-28 rounded-[8px]" />
       </div>
     );
   }
@@ -63,7 +64,7 @@ const CheckboxFiltersGroup: React.FC<Props> = ({
   if (showAll) {
     displayedItems = filteredItems;
   } else {
-    displayedItems = (defaultItems || items).slice(0, limit);
+    displayedItems = (defaultItems ?? items).slice(0, limit);
   }
 
   const checkedItems = displayedItems.filter((item) => selected?.has(item.value));
@@ -73,19 +74,19 @@ const CheckboxFiltersGroup: React.FC<Props> = ({
 
   return (
     <div className={className}>
-      <p className="font-bold mb-3">{title}</p>
+      <p className="mb-3 font-bold">{title}</p>
 
       {showAll && (
         <div className="mb-5">
           <Input
-            className="bg-gray-50 border-none"
+            className="border-none bg-gray-50"
             placeholder={searchInputPlaceholder}
             onChange={onChangeSearchInput}
           />
         </div>
       )}
 
-      <div className="flex flex-col gap-4 max-h-96 pr-2 overflow-auto scrollbar">
+      <div className="flex max-h-96 flex-col gap-4 overflow-auto pr-2">
         {sortedList.map((item, index) => (
           <FilterCheckbox
             key={index}
@@ -100,8 +101,8 @@ const CheckboxFiltersGroup: React.FC<Props> = ({
       </div>
 
       {items.length > limit && (
-        <div className={showAll ? "border-t border-t-neutral-100 mt-4" : ""}>
-          <button onClick={onClickShowAll} className="text-primary mt-3">
+        <div className={showAll ? "mt-4 border-t border-t-neutral-100" : ""}>
+          <button onClick={onClickShowAll} className="mt-3 text-primary">
             {showAll ? "Скрыть" : "+ Показать все"}
           </button>
         </div>

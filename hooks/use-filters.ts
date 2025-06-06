@@ -30,7 +30,7 @@ export const useFilters = (): ReturnProps => {
   const searchParams = useSearchParams();
 
   const [selectedIngredients, { toggle: toggleIngredients }] = useSet(
-    getSetFromQueryParam(searchParams, "ingredients")
+    getSetFromQueryParam(searchParams, "ingredients"),
   );
 
   const [pizzaSizes, { toggle: togglePizzaSizes }] = useSet(getSetFromQueryParam(searchParams, "pizzaSizes"));
@@ -60,6 +60,6 @@ export const useFilters = (): ReturnProps => {
       setSelectedIngredients: toggleIngredients,
       setPrices: updatePrice,
     }),
-    [pizzaSizes, pizzaTypes, selectedIngredients, prices]
+    [pizzaSizes, pizzaTypes, selectedIngredients, prices],
   );
 };

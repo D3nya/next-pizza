@@ -1,17 +1,18 @@
-import { cn } from "@/lib/utils";
 import { ArrowUpDown } from "lucide-react";
 import React from "react";
 
-type Props = {
+import { cn } from "@/lib/utils";
+
+interface Props {
   className?: string;
-};
+}
 
 const SortPopup: React.FC<Props> = ({ className }) => {
   return (
     <div
       className={cn(
-        "inline-flex items-center gap-1 bg-gray-50 dark:bg-gray-800 px-5 h-[52px] rounded-2xl cursor-pointer",
-        className
+        "inline-flex h-[52px] cursor-pointer items-center gap-1 rounded-2xl bg-gray-50 px-5 dark:bg-gray-800",
+        className,
       )}
     >
       <ArrowUpDown size={16} />

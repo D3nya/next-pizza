@@ -1,12 +1,13 @@
+import { Trash2Icon } from "lucide-react";
 import React from "react";
+
 import { cn } from "@/lib/utils";
 
 import { CartItemProps } from "./cart-item-details/cart-item-details.types";
 import { CartItemDetailsImage } from "./cart-item-details/cart-item-details-image";
+import { CartItemDetailsPrice } from "./cart-item-details/cart-item-details-price";
 import { CartItemInfo } from "./cart-item-details/cart-item-info";
 import { CountButton } from "./count-button";
-import { CartItemDetailsPrice } from "./cart-item-details/cart-item-details-price";
-import { Trash2Icon } from "lucide-react";
 
 interface Props extends CartItemProps {
   onClickCountButton?: (type: "plus" | "minus") => void;
@@ -28,11 +29,11 @@ const CartDrawerItem: React.FC<Props> = ({
   return (
     <div
       className={cn(
-        "flex bg-white dark:bg-gray-900 p-5 gap-6",
+        "flex gap-6 bg-white p-5 dark:bg-gray-900",
         {
-          "opacity-50 pointer-events-none": disabled,
+          "pointer-events-none opacity-50": disabled,
         },
-        className
+        className,
       )}
     >
       <CartItemDetailsImage src={imageUrl} />
@@ -49,7 +50,7 @@ const CartDrawerItem: React.FC<Props> = ({
             <CartItemDetailsPrice value={price} />
             <Trash2Icon
               onClick={onClickRemove}
-              className="text-gray-400 cursor-pointer hover:text-gray-600"
+              className="cursor-pointer text-gray-400 hover:text-gray-600"
               size={16}
             />
           </div>
