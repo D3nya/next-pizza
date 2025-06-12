@@ -31,7 +31,7 @@ export interface Metadata {
   order_id: string;
 }
 
-export type PaymentCallbackData = {
+export interface PaymentCallbackData {
   type: string;
   event: string;
   object: {
@@ -59,4 +59,4 @@ export type PaymentCallbackData = {
       auth_code: string;
     };
   };
-};
+}

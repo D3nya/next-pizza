@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
+
 import { Filters } from "./use-filters";
 
 export const useQueryFilters = (filters: Filters) => {
@@ -46,5 +47,5 @@ export const useQueryFilters = (filters: Filters) => {
     }
 
     isMounted.current = true;
-  }, [filters]);
+  }, [filters, ingredientsString, pizzaTypesString, router, sizesString]);
 };

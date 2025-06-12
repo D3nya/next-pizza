@@ -1,11 +1,12 @@
+import { ProductItem } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useSet } from "react-use";
-import { getAvailablePizzaSizes } from "@/lib/get-available-pizza-sizes";
-import { ProductItem } from "@prisma/client";
-import { PizzaSize, PizzaType } from "@/constants/products";
-import { Variant } from "@/components/shared/group-variants";
 
-type ReturnProps = {
+import { Variant } from "@/components/shared/group-variants";
+import { PizzaSize, PizzaType } from "@/constants/products";
+import { getAvailablePizzaSizes } from "@/lib/get-available-pizza-sizes";
+
+interface ReturnProps {
   size: PizzaSize;
   type: PizzaType;
   selectedIngredients: Set<number>;
@@ -14,7 +15,7 @@ type ReturnProps = {
   setSize: (size: PizzaSize) => void;
   setType: (size: PizzaType) => void;
   addIngredient: (id: number) => void;
-};
+}
 
 export const usePizzaOptions = (items: ProductItem[]): ReturnProps => {
   const [size, setSize] = useState<PizzaSize>(25);

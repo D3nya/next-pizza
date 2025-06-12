@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-type CategoryState = {
+interface CategoryState {
   activeCategoryId: number;
   actions: {
     setActiveCategoryId: (activeCategoryId: number) => void;
   };
-};
+}
 
 const useCategoryStore = create<CategoryState>()(
   devtools(

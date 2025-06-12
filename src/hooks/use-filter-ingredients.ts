@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
 import { Ingredient } from "@prisma/client";
+import { useEffect, useState } from "react";
+
 import { Api } from "@/services/api-client";
 
 export const useIngredients = () => {
@@ -19,7 +20,7 @@ export const useIngredients = () => {
       }
     }
 
-    fetchIngredients();
+    void fetchIngredients();
   }, []);
 
   return {

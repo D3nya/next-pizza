@@ -1,9 +1,9 @@
-import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import GitHubProvider from "next-auth/providers/github";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import { compare } from "bcrypt";
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
 const prisma = new PrismaClient();
 
@@ -19,7 +19,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       profile(profile) {
         return {
           id: String(profile.id),
-          fullName: profile.name || profile.login || `User #${profile.id}`,
+          fullName: profile.name ?? profile.login ?? `User #${profile.id}`,
           email: profile.email,
           role: "USER",
         };
@@ -32,11 +32,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials || !credentials.email || !credentials.password) {
+        if (!credentials?.email || !credentials.password) {
           return null;
         }
 
-        const email = String(credentials.email);
+        const email = typeof credentials.email === "string" ? credentials.email : "";
+        const password = typeof credentials.password === "string" ? credentials.password : "";
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           return null;
@@ -47,7 +48,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             where: { email },
           });
 
-          if (!user || !user.verified) {
+          if (!user?.verified) {
             return null;
           }
 
@@ -55,7 +56,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             return null;
           }
 
-          const isPasswordValid = compare(String(credentials.password), user.password);
+          const isPasswordValid = await compare(String(password), user.password);
 
           if (!isPasswordValid) {
             return null;
@@ -111,7 +112,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           await prisma.user.create({
             data: {
               email: user.email,
-              fullName: profile?.name || `User #${user.id}`,
+              fullName: profile?.name ?? `User #${user.id}`,
               password: null,
               verified: new Date(),
               provider: account.provider,
@@ -155,7 +156,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       return token;
     },
-    async session({ session, token }) {
+    session({ session, token }) {
       if (token && (token.role === "USER" || token.role === "ADMIN")) {
         session.user.id = String(token.id);
         session.user.role = token.role;

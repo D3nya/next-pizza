@@ -1,10 +1,11 @@
-import { CartStateItem, getCartDetails } from "@/lib/get-cart-details";
-import { Api } from "@/services/api-client";
-import { CreateCartItemValues } from "@/services/dto/cart.dto";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
-type CartState = {
+import { CartStateItem, getCartDetails } from "@/lib/get-cart-details";
+import { Api } from "@/services/api-client";
+import { CreateCartItemValues } from "@/services/dto/cart.dto";
+
+interface CartState {
   loading: boolean;
   error: boolean;
   totalAmount: number;
@@ -22,7 +23,7 @@ type CartState = {
     /* Remove item */
     removeCartItem: (id: number) => Promise<void>;
   };
-};
+}
 
 const useCartStore = create<CartState>()(
   devtools(

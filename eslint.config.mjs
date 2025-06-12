@@ -14,7 +14,16 @@ import eslintConfigPrettier from "eslint-config-prettier/flat";
 
 export default tseslint.config(
   // Ignores
-  globalIgnores([".next/**/*", "**/components/ui/", "**/node_modules/", ".git/"]),
+  globalIgnores([
+    ".next/**/*",
+    "**/components/ui/",
+    "**/node_modules/",
+    ".git/",
+    "prisma/seed.ts",
+    "prisma/migrations/**/*",
+    "prisma/schema.prisma",
+    "./tailwind.config.ts",
+  ]),
   // Next
   flatConfig.coreWebVitals,
 

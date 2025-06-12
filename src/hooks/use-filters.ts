@@ -1,18 +1,18 @@
-import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
 import { useSet } from "react-use";
 
-type PriceProps = {
+interface PriceProps {
   priceFrom?: number;
   priceTo?: number;
-};
+}
 
-export type Filters = {
+export interface Filters {
   pizzaSizes: Set<string>;
   pizzaTypes: Set<string>;
   selectedIngredients: Set<string>;
   prices: PriceProps;
-};
+}
 
 interface ReturnProps extends Filters {
   setPrices: (name: keyof PriceProps, value: number) => void;
@@ -60,6 +60,6 @@ export const useFilters = (): ReturnProps => {
       setSelectedIngredients: toggleIngredients,
       setPrices: updatePrice,
     }),
-    [pizzaSizes, pizzaTypes, selectedIngredients, prices],
+    [pizzaSizes, pizzaTypes, selectedIngredients, prices, togglePizzaSizes, togglePizzaTypes, toggleIngredients],
   );
 };
