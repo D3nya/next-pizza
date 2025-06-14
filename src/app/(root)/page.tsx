@@ -6,14 +6,12 @@ import ProductsList from "@/components/shared/products-list";
 import { Stories } from "@/components/shared/srories";
 import Title from "@/components/shared/title";
 import TopBar from "@/components/shared/top-bar";
-import { findPizzas, GetSearchParams } from "@/lib/find-pizzas";
+import { findPizzas, SearchParams } from "@/lib/find-pizzas";
 
-type SearchParams = Promise<GetSearchParams>;
+export default async function Home({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  const search = await searchParams;
 
-export default async function Home(props: { searchParams: SearchParams }) {
-  const searchParams = await props.searchParams;
-
-  const categories = await findPizzas(searchParams);
+  const categories = await findPizzas(search);
 
   return (
     <>

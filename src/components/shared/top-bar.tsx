@@ -13,6 +13,8 @@ interface Props {
 }
 
 const TopBar: React.FC<Props> = ({ className, categories }) => {
+  console.log(categories);
+
   return (
     <div
       className={cn(
